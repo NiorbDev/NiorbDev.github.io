@@ -16,7 +16,7 @@
   let hiddenCells;
   let body = [];
   let food;
-  let requested = false;
+  const queuedFood = new Set();
   let route = [];
   let layoutChanged = true;
   let timer;
@@ -46,7 +46,7 @@
     }
     layoutChanged = false;
     route = [];
-    if (!requested && hiddenCells[food]) food = undefined;
+    if (hiddenCells[food]) food = undefined;
   }
 
   // Breadth-first search gives the shortest route on a four-direction grid.
@@ -74,10 +74,11 @@
   }
 
   function placeFood() {
+    const unoccupied = cell => !body.includes(cell) && !queuedFood.has(cell);
     const cells = search(undefined, true);
-    const choices = cells.slice(5, 280).filter(cell => !body.includes(cell));
+    const choices = cells.slice(5, 280).filter(unoccupied);
     if (!choices.length) {
-      const open = search(undefined, false).filter(cell => !hiddenCells[cell] && !body.includes(cell));
+      const open = search(undefined, false).filter(cell => !hiddenCells[cell] && unoccupied(cell));
       food = open[Math.floor(Math.random() * open.length)];
       return;
     }
@@ -119,27 +120,31 @@
         context.fillRect(x + 4, y + 4, 2, 2);
       }
     }
-    if (food !== undefined) {
-      const x = food % columns * cellSize;
-      const y = Math.floor(food / columns) * cellSize;
-      context.globalAlpha = requested ? 0.95 : 0.68;
-      context.fillStyle = requested ? ivory : amber;
-      context.fillRect(x + 3, y + 3, 4, 4);
-      if (requested) {
-        context.strokeStyle = amber;
-        context.strokeRect(x + 0.5, y + 0.5, 9, 9);
-      }
-    }
+    if (food !== undefined) drawFood(food, false);
+    for (const cell of queuedFood) drawFood(cell, true);
     context.globalAlpha = 1;
+  }
+
+  function drawFood(cell, requested) {
+    const x = cell % columns * cellSize;
+    const y = Math.floor(cell / columns) * cellSize;
+    context.globalAlpha = requested ? 0.95 : 0.68;
+    context.fillStyle = requested ? ivory : amber;
+    context.fillRect(x + 3, y + 3, 4, 4);
+    if (requested) {
+      context.strokeStyle = amber;
+      context.strokeRect(x + 0.5, y + 0.5, 9, 9);
+    }
   }
 
   function tick() {
     if (document.hidden) return;
     if (layoutChanged) readPanels();
     if (food === undefined) placeFood();
-    if (food !== undefined && !route.length) {
-      route = search(food, true);
-      if (!route.length) route = search(food, false);
+    const target = queuedFood.values().next().value ?? food;
+    if (target !== undefined && !route.length) {
+      route = search(target, true);
+      if (!route.length) route = search(target, false);
     }
 
     const blocked = new Set(body.slice(0, -1));
@@ -156,12 +161,12 @@
     }
 
     body.unshift(next);
-    if (next === food) {
-      requested = false;
-      food = undefined;
+    const pickedRequestedFood = queuedFood.delete(next);
+    const pickedRandomFood = next === food;
+    if (pickedRequestedFood || pickedRandomFood) {
       route = [];
       if (body.length > maxLength) body.pop();
-      placeFood();
+      if (pickedRandomFood) placeFood();
     } else {
       body.pop();
     }
@@ -178,7 +183,7 @@
     columns = Math.max(1, Math.floor(width / cellSize));
     rows = Math.max(1, Math.floor(height / cellSize));
     food = undefined;
-    requested = false;
+    queuedFood.clear();
     readPanels();
     seedBody();
     placeFood();
@@ -193,10 +198,10 @@
     if (x < 0 || x >= columns || y < 0 || y >= rows) return;
     const cell = y * columns + x;
     if (layoutChanged) readPanels();
-    if (body.includes(cell)) return;
-    food = cell;
-    requested = true;
-    route = [];
+    if (body.includes(cell) || queuedFood.has(cell)) return;
+    if (!queuedFood.size) route = [];
+    if (cell === food) food = undefined;
+    queuedFood.add(cell);
     draw();
   });
   window.addEventListener("scroll", () => { layoutChanged = true; }, {passive: true});
