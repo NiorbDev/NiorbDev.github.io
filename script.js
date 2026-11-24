@@ -49,18 +49,24 @@ if (tickerTrack) {
   else beginTicker();
 }
 
-const galleryTrack = document.querySelector(".gallery-track");
-if (galleryTrack) {
-  const source = galleryTrack.querySelector(".gallery-group");
+const mosaicTrack = document.querySelector(".mosaic-track");
+if (mosaicTrack) {
+  const source = mosaicTrack.querySelector(".mosaic-board");
   if (source) {
     const clone = source.cloneNode(true);
     clone.dataset.loopClone = "true";
     clone.setAttribute("aria-hidden", "true");
     clone.querySelectorAll(".image-slot img").forEach(watchImage);
-    galleryTrack.appendChild(clone);
-    const groupHeight = source.getBoundingClientRect().height;
-    galleryTrack.style.setProperty("--gallery-duration", String(Math.max(24, groupHeight / 28)) + "s");
-    if (!reducedMotion.matches) galleryTrack.classList.add("is-running");
+    mosaicTrack.appendChild(clone);
+    const updateMosaic = () => {
+      const boardHeight = source.getBoundingClientRect().height;
+      if (!boardHeight) return;
+      mosaicTrack.classList.remove("is-running");
+      mosaicTrack.style.setProperty("--mosaic-duration", String(Math.max(24, boardHeight / 18)) + "s");
+      if (!reducedMotion.matches) mosaicTrack.classList.add("is-running");
+    };
+    updateMosaic();
+    if ("ResizeObserver" in window) new ResizeObserver(updateMosaic).observe(source);
   }
 }
 

@@ -1,27 +1,27 @@
 # Imágenes del portafolio NiorbDev
 
-El retrato principal ya está en niorb-portrait.png y se muestra completo, sin recorte. Las imágenes del carrusel usan los nombres indicados. Cuando generes una, guárdala en la carpeta gallery con el nombre exacto; la ilustración temporal se reemplaza sola.
+El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La portada usa un mosaico asimétrico como el boceto de Paint: una pieza de ojos, paneles altos para proyectos, recortes pequeños y anotaciones técnicas. Los SVG dibujados en el sitio son reemplazos temporales; al guardar una imagen con el nombre indicado, aparece en ese mismo marco.
 
 ## Lenguaje visual compartido
 
-Usa la foto de referencia del retrato como guía de identidad y color: negro noir #101114, carbón #24262D, marfil #F7F6F2 y ámbar muestreado de la foto #D1861F. El rosa queda reservado para la franja móvil. Busca una estética de portada editorial brutalista japonesa, retrofuturismo industrial e impresión analógica de finales del siglo XX: alto contraste, semitono fino, tinta desgastada, fotocopia y composición asimétrica. Nada de neón, brillos, degradados decorativos, letras inventadas, logotipos falsos ni interfaz ficticia. Conserva áreas negativas para que los rótulos reales los añada la página.
+Usa la foto de referencia del retrato para integrar el color ámbar exacto `#D1861F`, junto con noir `#101114`, carbón `#24262D` y marfil `#F7F6F2`. La franja inferior conserva su rosa. Busca brutalismo editorial, retrofuturismo industrial e impresión analógica: tinta sólida, semitono fino, fotocopia, contraste alto y desgaste moderado. Sin neón, glow, gradientes decorativos, logos inventados ni textos falsos. Conserva el contenido principal cerca del centro porque el mosaico recorta cada imagen en varios formatos.
 
 ## Archivos y prompts
 
-### gallery/01-retrato-detalle.png
+### `gallery/01-entrecapas.png`
 
-Usa el retrato de NiorbDev adjunto como referencia de identidad. Crea una segunda imagen editorial para el carrusel: retrato de medio cuerpo, mirada fuera de cámara, luz dura de estudio, blanco y negro de alto contraste, bloque de tinta ámbar #D1861F detrás del sujeto, negro noir y textura fina de fotocopia/halftone. Mantén sus rasgos, lentes, pelo y aros reconocibles; no cambies su identidad ni su ropa por un disfraz. Encuadre vertical 4:5, sujeto completo dentro del marco con aire alrededor, sin recortar la cabeza ni los hombros. Sin texto, letras, símbolos, logos ni efectos neón.
+Usa las capturas reales de EntreCapas como referencia principal. Conserva fielmente la interfaz, las prendas y los textos visibles; no inventes controles ni cambies el producto. Preséntalas en un collage editorial vertical, con marcos rectos y composición asimétrica. Paleta: noir `#101114`, carbón `#24262D`, marfil `#F7F6F2` y ámbar `#D1861F`. Tratamiento sutil de fotocopia o serigrafía, manteniendo la interfaz legible. Sin texto nuevo, logos falsos, neón ni degradados. Deja el contenido importante en la zona central para permitir recortes.
 
-### gallery/02-entrecapas.png
+### `gallery/02-color-block-jam.png`
 
-Usa la captura real de EntreCapas como referencia principal y conserva fielmente la interfaz, prendas, textos y proporciones visibles; no inventes controles ni cambies el producto. Conviértela en una lámina editorial vertical 4:5 de portafolio: captura enmarcada de forma asimétrica, papel marfil #F7F6F2, negro noir #101114, carbón #24262D, detalles de tinta ámbar #D1861F y textura de impresión analógica sutil. Deja espacio negativo alrededor para títulos que se añadirán por código. Sin textos nuevos, logos falsos, degradados ni brillos.
+Usa una captura real del solver Color Block Jam como núcleo y conserva exactamente el tablero y los datos que aparezcan. Crea una lámina editorial vertical con la cuadrícula y una ruta de búsqueda A* destacada mediante tinta ámbar `#D1861F`. Completa con noir `#101114`, carbón `#24262D`, marfil `#F7F6F2`, semitono fino y textura impresa moderada. No inventes una interfaz ni texto legible; sin estética gamer, neón o logos. Mantén tablero y ruta dentro del área central segura.
 
-### gallery/03-color-block-jam.png
+### `gallery/03-hough.png`
 
-Crea una lámina editorial vertical 4:5 sobre un solver de Color Block Jam en C++ que usa búsqueda A*. Si adjunto una captura real, mantenla reconocible y no alteres sus datos; úsala como núcleo del collage. Representa los bloques y una ruta de solución mediante formas geométricas claras, anotaciones técnicas pequeñas y composición asimétrica. Paleta estricta: noir #101114, carbón #24262D, marfil #F7F6F2, ámbar #D1861F. Tratamiento de serigrafía/fotocopia de finales del siglo XX, semitono discreto y tinta imperfecta. Sin texto inventado legible, logotipos, neón ni estética gamer.
+Usa una visualización real del detector de círculos con Transformada de Hough, si está disponible, y conserva sus resultados. Compón una lámina editorial sobre el procesamiento de imagen en C: círculos, centro detectado, líneas de medición y anotaciones gráficas breves. Tinta sólida noir `#101114`, carbón `#24262D`, marfil `#F7F6F2` y ámbar `#D1861F`; textura de fotocopia discreta. Sin letras inventadas, símbolos decorativos, neón ni degradados. Deja la detección dentro del área central para que sobreviva a recortes horizontales y verticales.
 
-### gallery/04-hough.png
+### `gallery/04-anime-eyes.png`
 
-Crea una lámina editorial vertical 4:5 para un proyecto de procesamiento de imágenes que detecta círculos mediante la Transformada de Hough en C/POSIX. Si adjunto una captura real, conserva sus círculos, marcas y datos tal como aparecen. Construye una composición de alto contraste con círculos concéntricos, puntos de centro, líneas de medición y textura de impresión analógica. Paleta estricta: noir #101114, carbón #24262D, marfil #F7F6F2 y ámbar #D1861F, aplicado como tinta sólida. Sin neón, degradados decorativos, letras inventadas ni elementos japoneses ornamentales.
+Ilustración original de un par de ojos de personaje anime ficticio, mirada intensa y expresiva, encuadre muy cercano. Dibujo de tinta negra y marfil con iris ámbar sólido `#D1861F`, textura de semitono y fotocopia analógica. Fondo noir `#101114` y carbón `#24262D`; alto contraste editorial. Mantén ambos ojos completos dentro del centro de la imagen porque el sitio reutiliza la ilustración en un panel ancho y en un detalle pequeño. Sin personaje existente, texto, kanji, logos, adornos japoneses, neón, glow o degradados.
 
-**Entrega:** imagen vertical 4:5, mínimo 1200 × 1500 px. El archivo se mostrará en el panel asimétrico; conserva el contenido importante dentro del área segura central.
+**Entrega sugerida:** PNG de buena resolución, con el sujeto o proyecto principal centrado y márgenes seguros. No hace falta crear varias versiones de la misma imagen: el mosaico reutiliza la de los ojos con otro recorte.

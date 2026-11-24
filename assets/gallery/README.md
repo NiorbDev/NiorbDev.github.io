@@ -1,10 +1,10 @@
-# Carrusel editorial
+# Mosaico editorial
 
 Guarda aquí las imágenes con estos nombres exactos:
 
-- 01-retrato-detalle.png
-- 02-entrecapas.png
-- 03-color-block-jam.png
-- 04-hough.png
+- `01-entrecapas.png`
+- `02-color-block-jam.png`
+- `03-hough.png`
+- `04-anime-eyes.png`
 
-Las ilustraciones SVG temporales se ocultan cuando aparece cada imagen. La guía de estilo y los prompts están en ../PROMPTS.md.
+Cada imagen ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. El sitio vuelve a usar el arte de ojos en otro recorte. Mientras falte un PNG, queda visible su ilustración SVG temporal. Consulta los prompts en [../PROMPTS.md](../PROMPTS.md).
