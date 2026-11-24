@@ -4,6 +4,29 @@ const year = new Date().getFullYear();
 document.querySelectorAll("[data-year]").forEach((node) => { node.textContent = String(year); });
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+const hero = document.querySelector(".hero");
+if (hero && !reducedMotion.matches && (!location.hash || location.hash === "#inicio") && window.scrollY < 80) {
+  let alreadyOpened = false;
+  try {
+    alreadyOpened = sessionStorage.getItem("niorbdev-print-intro") === "played";
+    sessionStorage.setItem("niorbdev-print-intro", "played");
+  } catch {
+    // The entrance can still play when browser storage is unavailable.
+  }
+
+  if (!alreadyOpened) {
+    hero.classList.add("is-printing");
+    const finishIntro = () => {
+      hero.classList.remove("is-printing");
+      window.removeEventListener("pointerdown", finishIntro, true);
+      window.removeEventListener("keydown", finishIntro, true);
+    };
+    window.addEventListener("pointerdown", finishIntro, true);
+    window.addEventListener("keydown", finishIntro, true);
+    window.setTimeout(finishIntro, 1650);
+  }
+}
+
 const dotCanvas = document.querySelector(".background-dots");
 const dotContext = dotCanvas?.getContext("2d");
 if (dotContext) {

@@ -13,8 +13,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=manga-links">
-<script src="script.js?v=manga-links" defer></script>
+<link rel="preload" as="image" href="assets/niorb-portrait-extension.png">
+<link rel="stylesheet" href="styles.css?v=print-intro">
+<script src="script.js?v=print-intro" defer></script>
 </head>
 <body>
 <canvas class="background-dots" aria-hidden="true"></canvas>
@@ -26,6 +27,7 @@
 <main id="contenido">
   <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
     <div class="hero-photo-panel">
+      <div class="hero-print-pass" aria-hidden="true"></div>
       <div class="hero-copy">
         <p class="eyebrow"><i class="signal-dot"></i> ARCHIVO PERSONAL · VOL. 01</p>
         <h1 id="hero-title">Ideas<br><em>en movimiento.</em></h1>

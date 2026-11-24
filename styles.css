@@ -74,6 +74,44 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .frame-cross{position:absolute;z-index:2;color:var(--amber);font:400 1rem var(--mono);line-height:1}
 .frame-cross--top{left:1.5rem;top:1.38rem}
 .frame-cross--bottom{right:1.5rem;bottom:1.35rem}
+.hero-print-pass{display:none}
+
+@media(prefers-reduced-motion:no-preference){
+  .is-printing .hero-print-pass{
+    display:block;
+    position:absolute;
+    inset:0;
+    z-index:4;
+    pointer-events:none;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 4px, rgba(16,17,20,.23) 4px 5px) top / 100% 25% no-repeat,
+      linear-gradient(to bottom,var(--amber) 0 9px,var(--charcoal) 9px 13px,var(--amber) 13px 15px,var(--noir) 15px);
+    animation:print-pass 1.15s cubic-bezier(.6,0,.22,1) both;
+  }
+  .is-printing .hero-copy h1{animation:print-title .66s .49s cubic-bezier(.19,1,.22,1) both}
+  .is-printing .mosaic-track.is-running{animation-play-state:paused}
+  .is-printing .mosaic-tile{
+    animation:print-tile .64s var(--print-delay,.29s) cubic-bezier(.19,1,.22,1) both;
+  }
+  .is-printing .mosaic-tile:nth-child(even){--print-delay:.48s}
+  .is-printing .mosaic-pair .mosaic-tile{--print-delay:.63s}
+  .is-printing .mosaic-pair .mosaic-tile + .mosaic-tile{--print-delay:.81s}
+}
+@keyframes print-pass{
+  from{transform:translateY(-5%) skewY(-5deg) scale(1.16)}
+  32%{transform:translateY(20%) skewY(-5deg) scale(1.16)}
+  to{transform:translateY(118%) skewY(-5deg) scale(1.16)}
+}
+@keyframes print-title{
+  from{clip-path:inset(0 100% 0 0);text-shadow:9px 0 var(--amber),-6px 0 var(--charcoal)}
+  45%{clip-path:inset(0);text-shadow:4px 0 var(--amber),-3px 0 var(--charcoal)}
+  to{clip-path:inset(0);text-shadow:0 0 transparent}
+}
+@keyframes print-tile{
+  from{clip-path:inset(0 0 100% 0);transform:translateY(15px)}
+  to{clip-path:inset(-3px -3px -3px -3px);transform:translateY(0)}
+}
+
 .hero-gallery{--gallery-border:rgba(247,246,242,.72);height:var(--hero-height);min-width:0;min-height:0;position:relative;overflow:hidden;background:var(--noir);border:1px solid rgba(247,246,242,.42)}
 .hero-gallery:before{content:"";position:absolute;inset:5px;border:1px solid rgba(247,246,242,.18);pointer-events:none;z-index:2}
 .mosaic-viewport{position:absolute;inset:11px;overflow:hidden}
