@@ -1,12 +1,6 @@
 # Mosaico editorial
 
-Guarda aquí las imágenes con estos nombres exactos:
-
-- `01-entrecapas.png`
-- `02-color-block-jam.png`
-- `03-hough.png`
-
-Cada imagen de proyecto ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. Las seis ilustraciones anime están en `anime/`; cada espacio elige una distinta al azar y evita repetir la que mostró ese mismo espacio en la visita anterior. Consulta los detalles en [../PROMPTS.md](../PROMPTS.md).
+Las capturas y fotos reutilizables están en [projects/](projects/README.md). El carrusel les aplica la paleta de la portada sin modificar los archivos guardados. Las seis ilustraciones anime están en `anime/`; cada espacio elige una distinta al azar y evita repetir la que mostró ese mismo espacio en la visita anterior.
 
 Imágenes anime disponibles:
 
