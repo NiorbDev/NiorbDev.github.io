@@ -91,10 +91,11 @@ if (mosaicTrack) {
     clone.setAttribute("aria-hidden", "true");
     clone.querySelectorAll(".image-slot img").forEach(watchImage);
     mosaicTrack.appendChild(clone);
+    let lastBoardHeight = 0;
     const updateMosaic = () => {
       const boardHeight = source.getBoundingClientRect().height;
-      if (!boardHeight) return;
-      mosaicTrack.classList.remove("is-running");
+      if (!boardHeight || Math.abs(boardHeight - lastBoardHeight) < 1) return;
+      lastBoardHeight = boardHeight;
       mosaicTrack.style.setProperty("--mosaic-duration", String(Math.max(24, boardHeight / 18)) + "s");
       if (!reducedMotion.matches) mosaicTrack.classList.add("is-running");
     };
