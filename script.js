@@ -6,6 +6,7 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const hero = document.querySelector(".hero");
 const replayIntro = new URLSearchParams(location.search).get("intro") === "1";
+const reloadingPage = performance.getEntriesByType("navigation")[0]?.type === "reload";
 const enteredAtHero = (!location.hash || location.hash === "#inicio") && window.scrollY < 80;
 if (hero && !reducedMotion.matches && (enteredAtHero || replayIntro)) {
   let alreadyOpened = false;
@@ -16,7 +17,7 @@ if (hero && !reducedMotion.matches && (enteredAtHero || replayIntro)) {
     // The entrance can still play when browser storage is unavailable.
   }
 
-  if (!alreadyOpened || replayIntro) {
+  if (!alreadyOpened || replayIntro || reloadingPage) {
     if (replayIntro) window.scrollTo({top: 0, behavior: "instant"});
     hero.classList.add("is-printing");
     const finishIntro = () => {

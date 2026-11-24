@@ -133,10 +133,8 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .mosaic-rule i{height:1px;background:var(--amber)}
 .mosaic-rule b{color:var(--amber);font:inherit}
 .mosaic-pair{grid-column:2;grid-row:8/10;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(5px,.75vw,10px)}
-.mosaic-media,.media-placeholder,.mosaic-media img{position:absolute;inset:0;width:100%;height:100%}
+.mosaic-media,.mosaic-media img{position:absolute;inset:0;width:100%;height:100%}
 .mosaic-media{overflow:hidden;background:var(--noir)}
-.media-placeholder{display:grid;place-items:center;color:var(--amber);background:var(--noir)}
-.media-placeholder svg{display:block;width:100%;height:100%}
 .mosaic-media img{z-index:1;opacity:0;object-fit:cover;transition:opacity .5s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
 .image-slot.has-image .mosaic-media img{opacity:1}
 .mosaic-tile:hover .mosaic-media img{transform:scale(1.035)}
@@ -148,7 +146,6 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .mosaic-jam img,.mosaic-hough-large img{object-fit:contain}
 .palette-definitions{position:absolute;pointer-events:none}
 .mosaic-project .mosaic-media img{filter:url("#project-print-palette")}
-.mosaic-project.has-image .media-placeholder{visibility:hidden}
 .mosaic-hough-large{grid-column:2;grid-row:10/13}
 .mosaic-corner{position:absolute;z-index:3;color:var(--amber);font:500 .7rem var(--mono);line-height:1;pointer-events:none}
 .mosaic-corner--top{left:7px;top:6px}
