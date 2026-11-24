@@ -3,6 +3,85 @@ document.documentElement.classList.add("has-js");
 const year = new Date().getFullYear();
 document.querySelectorAll("[data-year]").forEach((node) => { node.textContent = String(year); });
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+const dotCanvas = document.querySelector(".background-dots");
+const dotContext = dotCanvas?.getContext("2d");
+if (dotContext) {
+  const spacing = 5;
+  const radius = 82;
+  const size = 190;
+  const scale = Math.min(window.devicePixelRatio || 1, 2);
+  dotCanvas.width = size * scale;
+  dotCanvas.height = size * scale;
+  dotCanvas.style.width = size + "px";
+  dotCanvas.style.height = size + "px";
+  dotContext.scale(scale, scale);
+  const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--noir").trim();
+
+  let cursorX = 0;
+  let cursorY = 0;
+  let strength = 0;
+  let active = false;
+  let frame = 0;
+
+  const drawDots = () => {
+    frame = 0;
+    if (reducedMotion.matches) {
+      strength = 0;
+      dotCanvas.style.opacity = "0";
+      return;
+    }
+
+    const target = active ? 1 : 0;
+    strength += (target - strength) * 0.16;
+    if (Math.abs(target - strength) < 0.01) strength = target;
+    dotCanvas.style.opacity = strength === 0 ? "0" : "1";
+    if (strength === 0) return;
+
+    const left = Math.round((cursorX - size / 2) / spacing) * spacing;
+    const top = Math.round((cursorY - size / 2) / spacing) * spacing;
+    dotCanvas.style.transform = `translate3d(${left}px,${top}px,0)`;
+    dotContext.fillStyle = backgroundColor;
+    dotContext.fillRect(0, 0, size, size);
+    for (let y = spacing / 2; y < size; y += spacing) {
+      for (let x = spacing / 2; x < size; x += spacing) {
+        const dx = left + x - cursorX;
+        const dy = top + y - cursorY;
+        const distance = Math.hypot(dx, dy);
+        const influence = Math.max(0, 1 - distance / radius);
+        const shift = 8 * influence ** 2 * strength;
+        const direction = distance || 1;
+        const opacity = 0.07 + 0.28 * influence * strength;
+        dotContext.fillStyle = `rgba(247,246,242,${opacity})`;
+        dotContext.beginPath();
+        dotContext.arc(x + dx / direction * shift, y + dy / direction * shift, 0.65 + influence * strength * 0.22, 0, 2 * Math.PI);
+        dotContext.fill();
+      }
+    }
+
+    if (strength !== target) frame = requestAnimationFrame(drawDots);
+  };
+
+  const queueDots = () => {
+    if (!frame) frame = requestAnimationFrame(drawDots);
+  };
+  const resetDots = () => {
+    active = false;
+    queueDots();
+  };
+
+  window.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || reducedMotion.matches) return;
+    cursorX = event.clientX;
+    cursorY = event.clientY;
+    active = true;
+    queueDots();
+  }, { passive: true });
+  document.documentElement.addEventListener("pointerleave", resetDots);
+  window.addEventListener("blur", resetDots);
+  reducedMotion.addEventListener("change", resetDots);
+}
+
 const animeArtwork = [
   { src: "assets/gallery/anime/ado-live-cover.webp", alt: "Retrato editorial inspirado en Ado, con tinta noir y ámbar." },
   { src: "assets/gallery/anime/makima.webp", alt: "Lámina editorial de Makima, del universo Chainsaw Man." },
