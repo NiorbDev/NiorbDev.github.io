@@ -15,6 +15,8 @@
   let columns = 0;
   let rows = 0;
   let firstRow = 0;
+  let viewportWidth = 0;
+  let viewportHeight = 0;
   let hiddenCells;
   let body = [];
   let food;
@@ -22,6 +24,7 @@
   let route = [];
   let layoutChanged = true;
   let timer;
+  let scrollFrame = 0;
 
   function neighbors(cell) {
     const x = cell % columns;
@@ -35,14 +38,16 @@
   }
 
   function readPanels() {
-    firstRow = Math.min(rows, Math.max(0, Math.ceil((header?.getBoundingClientRect().bottom ?? 0) / cellSize)));
+    rows = Math.max(1, Math.floor(document.documentElement.scrollHeight / cellSize));
+    firstRow = Math.min(rows, Math.ceil((header?.offsetHeight ?? 0) / cellSize));
     hiddenCells = new Uint8Array(columns * rows);
+    const scrollTop = window.scrollY;
     for (const panel of panels) {
       const rect = panel.getBoundingClientRect();
       const left = Math.max(0, Math.ceil(rect.left / cellSize - 0.5));
       const right = Math.min(columns, Math.ceil(rect.right / cellSize - 0.5));
-      const top = Math.max(0, Math.ceil(rect.top / cellSize - 0.5));
-      const bottom = Math.min(rows, Math.ceil(rect.bottom / cellSize - 0.5));
+      const top = Math.max(0, Math.ceil((rect.top + scrollTop) / cellSize - 0.5));
+      const bottom = Math.min(rows, Math.ceil((rect.bottom + scrollTop) / cellSize - 0.5));
       for (let y = top; y < bottom; y++) {
         if (left < right) hiddenCells.fill(1, y * columns + left, y * columns + right);
       }
@@ -51,10 +56,9 @@
     route = [];
     const boundary = firstRow * columns;
     for (const cell of queuedFood) {
-      if (cell < boundary) queuedFood.delete(cell);
+      if (cell < boundary || cell >= hiddenCells.length) queuedFood.delete(cell);
     }
-    if (food < boundary) food = undefined;
-    if (hiddenCells[food]) food = undefined;
+    if (food < boundary || food >= hiddenCells.length || hiddenCells[food]) food = undefined;
   }
 
   // Breadth-first search gives the shortest route on a four-direction grid.
@@ -108,13 +112,27 @@
       }
       return true;
     });
-    const [head, stride] = open[Math.floor(Math.random() * open.length)] || cells[0] || [firstRow * columns, 1];
+    const top = window.scrollY + (header?.offsetHeight ?? 0);
+    const inView = open.filter(([head, stride]) => {
+      const firstY = Math.floor((head - (initialLength - 1) * stride) / columns) * cellSize;
+      const lastY = Math.floor(head / columns) * cellSize + cellSize;
+      return firstY >= top && lastY <= window.scrollY + viewportHeight;
+    });
+    const candidates = inView.length ? inView : open;
+    const [head, stride] = candidates[Math.floor(Math.random() * candidates.length)] || cells[0] || [firstRow * columns, 1];
     body = Array.from({length: cells.length ? initialLength : 1}, (_, i) => head - i * stride);
     route = [];
   }
 
   function draw() {
-    context.clearRect(0, 0, columns * cellSize, rows * cellSize);
+    const scrollTop = window.scrollY;
+    const headerBottom = Math.max(0, header?.getBoundingClientRect().bottom ?? 0);
+    context.clearRect(0, 0, viewportWidth, viewportHeight);
+    context.save();
+    context.beginPath();
+    context.rect(0, headerBottom, viewportWidth, Math.max(0, viewportHeight - headerBottom));
+    context.clip();
+    context.translate(0, -scrollTop);
     for (let i = body.length - 1; i >= 0; i--) {
       const cell = body[i];
       const x = cell % columns * cellSize;
@@ -130,7 +148,7 @@
     }
     if (food !== undefined) drawFood(food, false);
     for (const cell of queuedFood) drawFood(cell, true);
-    context.globalAlpha = 1;
+    context.restore();
   }
 
   function drawFood(cell, requested) {
@@ -149,10 +167,10 @@
     if (document.hidden) return;
     if (layoutChanged) readPanels();
     if (firstRow >= rows) {
-      context.clearRect(0, 0, columns * cellSize, rows * cellSize);
+      context.clearRect(0, 0, viewportWidth, viewportHeight);
       return;
     }
-    if (body.some(cell => cell < firstRow * columns)) seedBody();
+    if (!body.length || body.some(cell => cell < firstRow * columns || cell >= hiddenCells.length)) seedBody();
     if (food === undefined) placeFood();
     const target = queuedFood.values().next().value ?? food;
     if (target !== undefined && !route.length) {
@@ -187,14 +205,13 @@
   }
 
   function resize() {
-    const width = document.documentElement.clientWidth;
-    const height = window.innerHeight;
+    viewportWidth = document.documentElement.clientWidth;
+    viewportHeight = window.innerHeight;
     const scale = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * scale);
-    canvas.height = Math.round(height * scale);
+    canvas.width = Math.round(viewportWidth * scale);
+    canvas.height = Math.round(viewportHeight * scale);
     context.setTransform(scale, 0, 0, scale, 0, 0);
-    columns = Math.max(1, Math.floor(width / cellSize));
-    rows = Math.max(1, Math.floor(height / cellSize));
+    columns = Math.max(1, Math.floor(viewportWidth / cellSize));
     food = undefined;
     queuedFood.clear();
     readPanels();
@@ -208,10 +225,10 @@
     if (reducedMotion.matches || (event.pointerType && event.pointerType !== "mouse")) return;
     if (!event.detail || event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")) return;
     const x = Math.floor(event.clientX / cellSize);
-    const y = Math.floor(event.clientY / cellSize);
+    const y = Math.floor((event.clientY + window.scrollY) / cellSize);
+    if (layoutChanged) readPanels();
     if (x < 0 || x >= columns || y < 0 || y >= rows) return;
     const cell = y * columns + x;
-    if (layoutChanged) readPanels();
     if (y < firstRow) return;
     if (body.includes(cell) || queuedFood.has(cell)) return;
     if (!queuedFood.size) route = [];
@@ -219,7 +236,16 @@
     queuedFood.add(cell);
     draw();
   });
-  window.addEventListener("scroll", () => { layoutChanged = true; }, {passive: true});
+  window.addEventListener("scroll", () => {
+    if (reducedMotion.matches || scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      draw();
+    });
+  }, {passive: true});
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(() => { layoutChanged = true; }).observe(document.body);
+  }
   window.addEventListener("resize", () => { if (!reducedMotion.matches) resize(); }, {passive: true});
   const syncMotion = () => {
     window.clearInterval(timer);
