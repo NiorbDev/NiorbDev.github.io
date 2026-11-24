@@ -5,7 +5,9 @@ document.querySelectorAll("[data-year]").forEach((node) => { node.textContent = 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const hero = document.querySelector(".hero");
-if (hero && !reducedMotion.matches && (!location.hash || location.hash === "#inicio") && window.scrollY < 80) {
+const replayIntro = new URLSearchParams(location.search).get("intro") === "1";
+const enteredAtHero = (!location.hash || location.hash === "#inicio") && window.scrollY < 80;
+if (hero && !reducedMotion.matches && (enteredAtHero || replayIntro)) {
   let alreadyOpened = false;
   try {
     alreadyOpened = sessionStorage.getItem("niorbdev-print-intro") === "played";
@@ -14,7 +16,8 @@ if (hero && !reducedMotion.matches && (!location.hash || location.hash === "#ini
     // The entrance can still play when browser storage is unavailable.
   }
 
-  if (!alreadyOpened) {
+  if (!alreadyOpened || replayIntro) {
+    if (replayIntro) window.scrollTo({top: 0, behavior: "instant"});
     hero.classList.add("is-printing");
     const finishIntro = () => {
       hero.classList.remove("is-printing");
