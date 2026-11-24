@@ -83,12 +83,42 @@ if (dotContext) {
 }
 
 const animeArtwork = [
-  { src: "assets/gallery/anime/ado-live-cover.webp", alt: "Retrato editorial inspirado en Ado, con tinta noir y ámbar." },
-  { src: "assets/gallery/anime/makima.webp", alt: "Lámina editorial de Makima, del universo Chainsaw Man." },
-  { src: "assets/gallery/anime/one-piece.webp", alt: "Ilustración de personajes de One Piece en una composición impresa." },
-  { src: "assets/gallery/anime/anime-cat.webp", alt: "Ilustración anime de una joven dormida junto a un gato." },
-  { src: "assets/gallery/anime/flower-nobility.webp", alt: "Ilustración editorial de La nobleza de las flores." },
-  { src: "assets/gallery/anime/goodbye-eri.webp", alt: "Ilustración de Goodbye, Eri con estética de fotocopia." },
+  {
+    src: "assets/gallery/anime/ado-live-cover.webp",
+    alt: "Retrato editorial inspirado en Ado, con tinta noir y ámbar.",
+    href: "https://jpop.fandom.com/wiki/Ado",
+    linkLabel: "Ado en Jpop Wiki",
+  },
+  {
+    src: "assets/gallery/anime/makima.webp",
+    alt: "Lámina editorial de Makima, del universo Chainsaw Man.",
+    href: "https://chainsaw-man.fandom.com/wiki/Chainsaw_Man_%28Manga%29",
+    linkLabel: "Wiki del manga Chainsaw Man",
+  },
+  {
+    src: "assets/gallery/anime/one-piece.webp",
+    alt: "Ilustración de personajes de One Piece en una composición impresa.",
+    href: "https://onepiece.fandom.com/wiki/One_Piece_%28Manga%29",
+    linkLabel: "Wiki del manga One Piece",
+  },
+  {
+    src: "assets/gallery/anime/anime-cat.webp",
+    alt: "Ilustración de El pecado original de Takopi.",
+    href: "https://takopis-original-sin.fandom.com/wiki/Takopi%27s_Original_Sin_Wiki",
+    linkLabel: "Wiki de El pecado original de Takopi",
+  },
+  {
+    src: "assets/gallery/anime/flower-nobility.webp",
+    alt: "Ilustración editorial de La nobleza de las flores.",
+    href: "https://kaoruhana.fandom.com/wiki/Kaoru_Hana_wa_Rin_to_Saku_Wiki",
+    linkLabel: "Wiki de La nobleza de las flores",
+  },
+  {
+    src: "assets/gallery/anime/goodbye-eri.webp",
+    alt: "Ilustración de Goodbye, Eri con estética de fotocopia.",
+    href: "https://www.viz.com/goodbye-eri",
+    linkLabel: "Ficha oficial de Goodbye, Eri",
+  },
 ];
 const animeSlots = document.querySelectorAll("[data-anime-image]");
 let previousAnimePicks = [];
@@ -109,6 +139,9 @@ animeSlots.forEach((image, index) => {
   currentAnimePicks[index] = selectedAnime.src;
   image.src = selectedAnime.src;
   image.alt = (index > 0 ? "Recorte editorial: " : "") + selectedAnime.alt;
+  const link = image.closest(".mosaic-art-link");
+  link.href = selectedAnime.href;
+  link.setAttribute("aria-label", selectedAnime.linkLabel + " (abre en otra pestaña)");
 });
 try {
   localStorage.setItem("niorbdev-anime-art-picks", JSON.stringify(currentAnimePicks));
@@ -168,6 +201,7 @@ if (mosaicTrack) {
     const clone = source.cloneNode(true);
     clone.dataset.loopClone = "true";
     clone.setAttribute("aria-hidden", "true");
+    clone.querySelectorAll("a").forEach((link) => { link.tabIndex = -1; });
     clone.querySelectorAll(".image-slot img").forEach(watchImage);
     mosaicTrack.appendChild(clone);
     let lastBoardHeight = 0;
