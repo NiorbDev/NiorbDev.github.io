@@ -1,6 +1,6 @@
 # Imágenes del portafolio NiorbDev
 
-El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La portada usa un mosaico asimétrico como el boceto de Paint: una pieza de ojos, paneles altos para proyectos, recortes pequeños y anotaciones técnicas. Los SVG dibujados en el sitio son reemplazos temporales; al guardar una imagen con el nombre indicado, aparece en ese mismo marco.
+El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La portada usa un mosaico asimétrico como el boceto de Paint: paneles altos para proyectos, recortes pequeños y anotaciones técnicas. Los SVG dibujados en el sitio son reemplazos temporales para los proyectos. El mosaico escoge al azar una de las imágenes anime al abrir la página y reutiliza esa misma imagen en los dos recortes.
 
 ## Lenguaje visual compartido
 
@@ -20,8 +20,8 @@ Usa una captura real del solver Color Block Jam como núcleo y conserva exactame
 
 Usa una visualización real del detector de círculos con Transformada de Hough, si está disponible, y conserva sus resultados. Compón una lámina editorial sobre el procesamiento de imagen en C: círculos, centro detectado, líneas de medición y anotaciones gráficas breves. Tinta sólida noir `#101114`, carbón `#24262D`, marfil `#F7F6F2` y ámbar `#D1861F`; textura de fotocopia discreta. Sin letras inventadas, símbolos decorativos, neón ni degradados. Deja la detección dentro del área central para que sobreviva a recortes horizontales y verticales.
 
-### `gallery/04-anime-eyes.png`
+### Imágenes anime aleatorias (`gallery/anime/`)
 
-Ilustración original de un par de ojos de personaje anime ficticio, mirada intensa y expresiva, encuadre muy cercano. Dibujo de tinta negra y marfil con iris ámbar sólido `#D1861F`, textura de semitono y fotocopia analógica. Fondo noir `#101114` y carbón `#24262D`; alto contraste editorial. Mantén ambos ojos completos dentro del centro de la imagen porque el sitio reutiliza la ilustración en un panel ancho y en un detalle pequeño. Sin personaje existente, texto, kanji, logos, adornos japoneses, neón, glow o degradados.
+El sitio selecciona una imagen al azar entre `ado-live-cover.webp`, `makima.webp`, `one-piece.webp`, `anime-cat.webp`, `flower-nobility.webp` y `goodbye-eri.webp`. Las dos ventanas muestran recortes distintos de la misma selección durante esa visita. Son imágenes aportadas por Nico, optimizadas a WebP para que el mosaico no cargue archivos de varios megabytes.
 
-**Entrega sugerida:** PNG de buena resolución, con el sujeto o proyecto principal centrado y márgenes seguros. No hace falta crear varias versiones de la misma imagen: el mosaico reutiliza la de los ojos con otro recorte.
+**Entrega sugerida para nuevos proyectos:** PNG o WebP de buena resolución, con el sujeto o proyecto principal centrado y márgenes seguros. El mosaico reutiliza la imagen anime elegida con otro recorte; no hacen falta versiones adicionales.

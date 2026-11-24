@@ -5,6 +5,14 @@ Guarda aquí las imágenes con estos nombres exactos:
 - `01-entrecapas.png`
 - `02-color-block-jam.png`
 - `03-hough.png`
-- `04-anime-eyes.png`
 
-Cada imagen ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. El sitio vuelve a usar el arte de ojos en otro recorte. Mientras falte un PNG, queda visible su ilustración SVG temporal. Consulta los prompts en [../PROMPTS.md](../PROMPTS.md).
+Cada imagen de proyecto ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. Las seis ilustraciones anime están en `anime/`; al abrir el sitio se escoge una al azar y se reutiliza en dos recortes. Consulta los detalles en [../PROMPTS.md](../PROMPTS.md).
+
+Imágenes anime disponibles:
+
+- `anime/ado-live-cover.webp`
+- `anime/makima.webp`
+- `anime/one-piece.webp`
+- `anime/anime-cat.webp`
+- `anime/flower-nobility.webp`
+- `anime/goodbye-eri.webp`

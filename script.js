@@ -3,6 +3,20 @@ document.documentElement.classList.add("has-js");
 const year = new Date().getFullYear();
 document.querySelectorAll("[data-year]").forEach((node) => { node.textContent = String(year); });
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const animeArtwork = [
+  { src: "assets/gallery/anime/ado-live-cover.webp", alt: "Retrato editorial inspirado en Ado, con tinta noir y ámbar." },
+  { src: "assets/gallery/anime/makima.webp", alt: "Lámina editorial de Makima, del universo Chainsaw Man." },
+  { src: "assets/gallery/anime/one-piece.webp", alt: "Ilustración de personajes de One Piece en una composición impresa." },
+  { src: "assets/gallery/anime/anime-cat.webp", alt: "Ilustración anime de una joven dormida junto a un gato." },
+  { src: "assets/gallery/anime/flower-nobility.webp", alt: "Ilustración editorial de La nobleza de las flores." },
+  { src: "assets/gallery/anime/goodbye-eri.webp", alt: "Ilustración de Goodbye, Eri con estética de fotocopia." },
+];
+const selectedAnime = animeArtwork[Math.floor(Math.random() * animeArtwork.length)];
+document.querySelectorAll("[data-anime-image]").forEach((image, index) => {
+  image.src = selectedAnime.src;
+  if (index > 0) image.alt = "Recorte: " + selectedAnime.alt;
+  else image.alt = selectedAnime.alt;
+});
 
 const watchImage = (image) => {
   const slot = image.closest(".image-slot");
