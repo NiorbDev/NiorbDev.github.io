@@ -27,15 +27,18 @@ body:before{
   background-image:radial-gradient(circle,rgba(247,246,242,.07) .55px,transparent .8px);
   background-size:5px 5px;
 }
-.background-dots{
+.background-dots,.background-snake{
   position:fixed;
   top:0;
   left:0;
   z-index:-1;
   pointer-events:none;
+}
+.background-dots{
   opacity:0;
   mask-image:radial-gradient(circle,#000 45%,transparent 70%);
 }
+.background-snake{width:100%;height:100%}
 a{color:inherit;text-decoration:none}
 a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 ::selection{color:var(--noir);background:var(--amber)}
@@ -294,7 +297,7 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
   .mosaic-pair{gap:5px}
 }
 @media(prefers-reduced-motion:reduce){
-  .background-dots{display:none}
+  .background-dots,.background-snake{display:none}
   html{scroll-behavior:auto}
   *,*:before,*:after{animation:none!important;transition:none!important}
   .has-js .reveal{opacity:1;transform:none}
