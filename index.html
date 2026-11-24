@@ -3,11 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101012">
+<meta name="theme-color" content="#101114">
 <meta name="description" content="Portafolio de NiorbDev: interfaces, algoritmos y proyectos digitales.">
 <meta property="og:title" content="NiorbDev — ideas en movimiento">
 <meta property="og:description" content="Proyectos digitales, interfaces y algoritmos.">
+<meta property="og:image" content="https://niorbdev.github.io/assets/niorb-portrait.png">
+<meta name="twitter:card" content="summary_large_image">
 <title>NiorbDev — ideas en movimiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="script.js" defer></script>
 </head>
@@ -18,26 +23,61 @@
   <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Herramientas <span>02</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </header>
 <main id="contenido">
-  <section class="hero section-wrap" id="inicio">
-    <div class="hero-copy">
-      <p class="eyebrow"><i class="signal-dot"></i> ARCHIVO DE PROYECTOS · EN CONSTRUCCIÓN</p>
-      <h1>Ideas<br><em>en movimiento.</em></h1>
-      <p class="hero-intro">Interfaces, algoritmos y sistemas que resuelven algo concreto. Este es el archivo de lo que voy construyendo.</p>
-      <a class="explore-link" href="#proyectos">Ver proyectos <span>↓</span></a>
-      <div class="hero-foot"><span>01—03 / SELECCIÓN</span><span>CÓDIGO · DISEÑO · PRUEBA</span></div>
+  <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
+    <div class="hero-photo-panel">
+      <img class="hero-photo" src="assets/niorb-portrait.png" alt="Retrato editorial de NiorbDev en blanco y negro, con una franja ámbar al fondo." fetchpriority="high" decoding="async">
+      <div class="hero-copy">
+        <p class="eyebrow"><i class="signal-dot"></i> ARCHIVO PERSONAL · VOL. 01</p>
+        <h1 id="hero-title">Ideas<br><em>en movimiento.</em></h1>
+        <p class="hero-intro">Interfaces, algoritmos y sistemas que resuelven algo concreto. Este es el archivo de lo que voy construyendo.</p>
+        <a class="explore-link" href="#proyectos">Ver proyectos <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="hero-vertical-note" aria-hidden="true">CÓDIGO · DISEÑO · PRUEBA</p>
+      <div class="hero-photo-index" aria-hidden="true"><span>ND / 001</span><span>RETRATO · ARCHIVO</span></div>
+      <span class="frame-cross frame-cross--top" aria-hidden="true">+</span>
+      <span class="frame-cross frame-cross--bottom" aria-hidden="true">+</span>
     </div>
-    <div class="hero-art" role="img" aria-label="Gráfica abstracta animada, dibujada con CSS">
-      <div class="art-index">ND—01<br><span>NO QUIET MODE</span></div><div class="art-scan"></div>
-      <div class="orbital orbital-one"></div><div class="orbital orbital-two"></div><div class="orbital orbital-three"></div>
-      <div class="art-core"><span>N</span><b>/</b></div><div class="art-cross cross-one"></div><div class="art-cross cross-two"></div>
-      <p class="art-caption">BUILD<br>BREAK<br>REPEAT<span>✳</span></p><div class="art-side-note">SOFTWARE / 2026 / VOL. 01</div>
-    </div>
+    <aside class="hero-gallery" aria-labelledby="gallery-title">
+      <div class="gallery-heading">
+        <div><p class="eyebrow">02—05 / ARCHIVO VISUAL</p><h2 id="gallery-title">Imágenes<br><em>en proceso.</em></h2></div>
+        <span class="gallery-counter" aria-hidden="true">01<br><i>/</i><br>04</span>
+      </div>
+      <p class="gallery-note">RETRATOS Y PROYECTOS<br>SELECCIÓN EDITORIAL</p>
+      <div class="gallery-viewport">
+        <div class="gallery-track">
+          <div class="gallery-group">
+            <figure class="gallery-card gallery-card--portrait">
+              <div class="gallery-media image-slot">
+                <div class="media-placeholder" aria-hidden="true"><svg viewBox="0 0 360 240"><rect x="18" y="18" width="324" height="204" fill="none" stroke="currentColor"/><circle cx="180" cy="120" r="64" fill="none" stroke="currentColor" stroke-width="2"/><path d="M180 32v176M92 120h176M118 58l124 124M242 58 118 182" fill="none" stroke="currentColor"/><text x="28" y="48">ND—02</text><text x="232" y="205">RETRATO</text></svg></div>
+                <img src="assets/gallery/01-retrato-detalle.webp" alt="Retrato editorial de NiorbDev, en blanco y negro con tinta ámbar." loading="lazy" decoding="async"><span class="media-index">01 / RETRATO</span>
+              </div><figcaption><span>CUERPO / ARCHIVO</span><small>01—04</small></figcaption>
+            </figure>
+            <figure class="gallery-card gallery-card--entrecapas">
+              <div class="gallery-media image-slot">
+                <div class="media-placeholder" aria-hidden="true"><svg viewBox="0 0 360 240"><path d="M180 38v50m0 0-86 70m86-70 86 70M94 158h172v34H94z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M69 56h42v10H69zm180 0h42v10h-42zM62 207h236" fill="none" stroke="currentColor"/><text x="22" y="32">EC / 01</text><text x="216" y="220">CAPAS</text></svg></div>
+                <img src="assets/gallery/02-entrecapas.webp" alt="Imagen editorial de EntreCapas, ropero digital y probador 2D." loading="lazy" decoding="async"><span class="media-index">02 / ENTRECAPAS</span>
+              </div><figcaption><span>ROPERO DIGITAL</span><small>WEB APP</small></figcaption>
+            </figure>
+            <figure class="gallery-card gallery-card--solver">
+              <div class="gallery-media image-slot">
+                <div class="media-placeholder" aria-hidden="true"><svg viewBox="0 0 360 240"><path d="M50 48h260v144H50zM102 48v144m52-144v144m52-144v144m52-144v144M50 96h260m-260 48h260" fill="none" stroke="currentColor"/><path d="M104 98h48v45h-48zm105 0h48v45h-48z" fill="currentColor" opacity=".23" stroke="currentColor" stroke-width="2"/><path d="M78 168h62m0 0-14-13m14 13-14 13M260 72h34" fill="none" stroke="currentColor" stroke-width="3"/><text x="22" y="30">A* / SEARCH</text><text x="250" y="221">PUZZLE</text></svg></div>
+                <img src="assets/gallery/03-color-block-jam.webp" alt="Composición editorial del solver Color Block Jam y su búsqueda de rutas." loading="lazy" decoding="async"><span class="media-index">03 / COLOR BLOCK JAM</span>
+              </div><figcaption><span>ALGORITMOS · A*</span><small>C++</small></figcaption>
+            </figure>
+            <figure class="gallery-card gallery-card--hough">
+              <div class="gallery-media image-slot">
+                <div class="media-placeholder" aria-hidden="true"><svg viewBox="0 0 360 240"><circle cx="176" cy="118" r="75" fill="none" stroke="currentColor"/><circle cx="176" cy="118" r="50" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="176" cy="118" r="24" fill="none" stroke="currentColor"/><path d="M176 22v192M80 118h192M108 50l136 136M244 50 108 186" fill="none" stroke="currentColor" opacity=".55"/><circle cx="176" cy="118" r="5" fill="currentColor"/><text x="20" y="30">HOUGH / C</text><text x="220" y="219">CENTRO</text></svg></div>
+                <img src="assets/gallery/04-hough.webp" alt="Visualización editorial de detección de círculos mediante Hough." loading="lazy" decoding="async"><span class="media-index">04 / HOUGH</span>
+              </div><figcaption><span>IMAGEN / PROCESOS</span><small>C · POSIX</small></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-footer"><span>DESLIZAMIENTO CONTINUO</span><span aria-hidden="true">↓ ↓ ↓</span></div>
+    </aside>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="ticker-track">
-    <span>IDEAS EN MOVIMIENTO</span><i>✳</i><span>CÓDIGO QUE SE PUEDE VER</span><i>✳</i><span>PROBAR · AJUSTAR · REPETIR</span><i>✳</i>
-    <span>IDEAS EN MOVIMIENTO</span><i>✳</i><span>CÓDIGO QUE SE PUEDE VER</span><i>✳</i><span>PROBAR · AJUSTAR · REPETIR</span><i>✳</i>
-  </div></div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-group"><span>IDEAS EN MOVIMIENTO</span><i>✳</i><span>CÓDIGO QUE SE PUEDE VER</span><i>✳</i><span>PROBAR · AJUSTAR · REPETIR</span><i>✳</i></div></div></div>
 
   <section class="projects section-wrap" id="proyectos">
     <div class="section-heading reveal"><div><p class="eyebrow">01 / TRABAJO SELECCIONADO</p><h2>Proyectos<span class="pink-dot">.</span></h2></div><p class="section-aside">Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.</p></div>
@@ -69,12 +109,11 @@
   <section class="toolkit section-wrap" id="herramientas">
     <div class="toolkit-copy reveal"><p class="eyebrow">02 / MATERIALES</p><h2>Código con<br><em>textura.</em></h2><p>El stack cambia según el problema. En estos proyectos aparecen interfaces web, estructuras de búsqueda y programas de sistema.</p></div>
     <div class="toolkit-panel reveal">
-      <div class="panel-label"><span>HERRAMIENTAS EN PROYECTOS PÚBLICOS</span><span>● ONLINE</span></div>
+      <div class="panel-label"><span>HERRAMIENTAS EN PROYECTOS PÚBLICOS</span><span>● EN USO</span></div>
       <div class="tool-list"><span>React</span><span>TypeScript</span><span>C++</span><span>C</span><span>A*</span><span>POSIX</span><span>CSS</span></div>
-      <div class="panel-footer"><span>SELECTED STACK / 2026</span><span>CSS-DRAWN VISUALS</span></div>
+      <div class="panel-footer"><span>SELECTED STACK / 2026</span><span>PRINTED IN CODE</span></div>
     </div>
   </section>
-
   <section class="closing section-wrap reveal"><p class="eyebrow">03 / SIGUE EL RASTRO</p><h2>Más código.<br><span>Menos ruido.</span></h2><a class="closing-link" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Explorar GitHub ↗</a><div class="closing-stamp" aria-hidden="true">ND<br>2026</div></section>
 </main>
 <footer class="site-footer"><a class="footer-mark" href="#inicio">N<span>/</span></a><span>NIORBDEV · PORTAFOLIO PERSONAL</span><a href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GITHUB ↗</a><span>© <span data-year>2026</span></span></footer>
