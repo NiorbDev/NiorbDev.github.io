@@ -6,7 +6,7 @@ Guarda aquí las imágenes con estos nombres exactos:
 - `02-color-block-jam.png`
 - `03-hough.png`
 
-Cada imagen de proyecto ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. Las seis ilustraciones anime están en `anime/`; al abrir el sitio se escoge una al azar y se reutiliza en dos recortes. Consulta los detalles en [../PROMPTS.md](../PROMPTS.md).
+Cada imagen de proyecto ocupa marcos altos, anchos y pequeños dentro de la retícula asimétrica. Las seis ilustraciones anime están en `anime/`; cada espacio elige una distinta al azar y evita repetir la que mostró ese mismo espacio en la visita anterior. Consulta los detalles en [../PROMPTS.md](../PROMPTS.md).
 
 Imágenes anime disponibles:
 

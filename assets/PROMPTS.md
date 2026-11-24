@@ -1,6 +1,6 @@
 # Imágenes del portafolio NiorbDev
 
-El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La portada usa un mosaico asimétrico como el boceto de Paint: paneles altos para proyectos, recortes pequeños y anotaciones técnicas. Los SVG dibujados en el sitio son reemplazos temporales para los proyectos. El mosaico escoge al azar una de las imágenes anime al abrir la página y reutiliza esa misma imagen en los dos recortes.
+El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La portada usa un mosaico asimétrico como el boceto de Paint: paneles altos para proyectos, recortes pequeños y anotaciones técnicas. Los SVG dibujados en el sitio son reemplazos temporales para los proyectos. Cada espacio anime escoge una imagen al azar al abrir la página; los dos espacios muestran imágenes distintas y evitan repetir la selección anterior de cada uno.
 
 ## Lenguaje visual compartido
 
@@ -22,6 +22,6 @@ Usa una visualización real del detector de círculos con Transformada de Hough,
 
 ### Imágenes anime aleatorias (`gallery/anime/`)
 
-El sitio selecciona una imagen al azar entre `ado-live-cover.webp`, `makima.webp`, `one-piece.webp`, `anime-cat.webp`, `flower-nobility.webp` y `goodbye-eri.webp`. Las dos ventanas muestran recortes distintos de la misma selección durante esa visita. Son imágenes aportadas por Nico, optimizadas a WebP para que el mosaico no cargue archivos de varios megabytes.
+Cada espacio anime selecciona al azar entre `ado-live-cover.webp`, `makima.webp`, `one-piece.webp`, `anime-cat.webp`, `flower-nobility.webp` y `goodbye-eri.webp`. Los dos espacios no repiten imagen en una misma visita, y al volver a cargar evitan mostrar la misma que ocupó ese espacio la vez anterior. Son imágenes aportadas por Nico, optimizadas a WebP para que el mosaico no cargue archivos de varios megabytes.
 
-**Entrega sugerida para nuevos proyectos:** PNG o WebP de buena resolución, con el sujeto o proyecto principal centrado y márgenes seguros. El mosaico reutiliza la imagen anime elegida con otro recorte; no hacen falta versiones adicionales.
+**Entrega sugerida para nuevos proyectos:** PNG o WebP de buena resolución, con el sujeto o proyecto principal centrado y márgenes seguros. El mosaico reutiliza cada archivo en formatos distintos; no hacen falta versiones de recorte adicionales.

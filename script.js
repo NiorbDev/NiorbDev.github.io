@@ -11,12 +11,31 @@ const animeArtwork = [
   { src: "assets/gallery/anime/flower-nobility.webp", alt: "Ilustración editorial de La nobleza de las flores." },
   { src: "assets/gallery/anime/goodbye-eri.webp", alt: "Ilustración de Goodbye, Eri con estética de fotocopia." },
 ];
-const selectedAnime = animeArtwork[Math.floor(Math.random() * animeArtwork.length)];
-document.querySelectorAll("[data-anime-image]").forEach((image, index) => {
+const animeSlots = document.querySelectorAll("[data-anime-image]");
+let previousAnimePicks = [];
+try {
+  const storedPicks = JSON.parse(localStorage.getItem("niorbdev-anime-art-picks") || "[]");
+  if (Array.isArray(storedPicks)) previousAnimePicks = storedPicks;
+} catch {
+  previousAnimePicks = [];
+}
+const usedAnime = new Set();
+const currentAnimePicks = [];
+animeSlots.forEach((image, index) => {
+  let choices = animeArtwork.filter((artwork) => !usedAnime.has(artwork.src) && artwork.src !== previousAnimePicks[index]);
+  if (!choices.length) choices = animeArtwork.filter((artwork) => !usedAnime.has(artwork.src));
+  const selectedAnime = choices[Math.floor(Math.random() * choices.length)];
+  if (!selectedAnime) return;
+  usedAnime.add(selectedAnime.src);
+  currentAnimePicks[index] = selectedAnime.src;
   image.src = selectedAnime.src;
-  if (index > 0) image.alt = "Recorte: " + selectedAnime.alt;
-  else image.alt = selectedAnime.alt;
+  image.alt = (index > 0 ? "Recorte editorial: " : "") + selectedAnime.alt;
 });
+try {
+  localStorage.setItem("niorbdev-anime-art-picks", JSON.stringify(currentAnimePicks));
+} catch {
+  // La selección sigue funcionando si el navegador bloquea el almacenamiento local.
+}
 
 const watchImage = (image) => {
   const slot = image.closest(".image-slot");
