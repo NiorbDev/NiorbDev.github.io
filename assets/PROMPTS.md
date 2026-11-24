@@ -4,7 +4,7 @@ El retrato principal ya está en `niorb-portrait.png` y se muestra completo. La 
 
 ## Lenguaje visual compartido
 
-Usa la foto de referencia del retrato para integrar el color ámbar exacto `#D1861F`, junto con noir `#101114`, carbón `#24262D` y marfil `#F7F6F2`. La franja inferior conserva su rosa. Busca brutalismo editorial, retrofuturismo industrial e impresión analógica: tinta sólida, semitono fino, fotocopia, contraste alto y desgaste moderado. Sin neón, glow, gradientes decorativos, logos inventados ni textos falsos. Conserva el contenido principal cerca del centro porque el mosaico recorta cada imagen en varios formatos.
+Usa la foto de referencia del retrato para integrar el color ámbar exacto `#D1861F`, junto con noir `#101114`, carbón `#24262D` y marfil `#F7F6F2`. La franja inferior usa el mismo ámbar. Busca brutalismo editorial, retrofuturismo industrial e impresión analógica: tinta sólida, semitono fino, fotocopia, contraste alto y desgaste moderado. Sin neón, glow, gradientes decorativos, logos inventados ni textos falsos. Conserva el contenido principal cerca del centro porque el mosaico recorta cada imagen en varios formatos.
 
 ## Archivos y prompts
 
