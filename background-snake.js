@@ -7,12 +7,14 @@
   const palette = getComputedStyle(document.documentElement);
   const amber = palette.getPropertyValue("--amber").trim();
   const ivory = palette.getPropertyValue("--ivory").trim();
+  const header = document.querySelector(".site-header");
   const panels = [...document.querySelectorAll(".hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")];
   const cellSize = 10;
   const initialLength = 5;
   const maxLength = 18;
   let columns = 0;
   let rows = 0;
+  let firstRow = 0;
   let hiddenCells;
   let body = [];
   let food;
@@ -27,12 +29,13 @@
     const next = [];
     if (x > 0) next.push(cell - 1);
     if (x < columns - 1) next.push(cell + 1);
-    if (y > 0) next.push(cell - columns);
+    if (y > firstRow) next.push(cell - columns);
     if (y < rows - 1) next.push(cell + columns);
     return next;
   }
 
   function readPanels() {
+    firstRow = Math.min(rows, Math.max(0, Math.ceil((header?.getBoundingClientRect().bottom ?? 0) / cellSize)));
     hiddenCells = new Uint8Array(columns * rows);
     for (const panel of panels) {
       const rect = panel.getBoundingClientRect();
@@ -46,6 +49,11 @@
     }
     layoutChanged = false;
     route = [];
+    const boundary = firstRow * columns;
+    for (const cell of queuedFood) {
+      if (cell < boundary) queuedFood.delete(cell);
+    }
+    if (food < boundary) food = undefined;
     if (hiddenCells[food]) food = undefined;
   }
 
@@ -87,11 +95,11 @@
 
   function seedBody() {
     const cells = [];
-    for (let y = 0; y < rows; y++) {
+    for (let y = firstRow; y < rows; y++) {
       for (let x = 0; x < columns; x++) {
         const head = y * columns + x;
         if (x >= initialLength - 1) cells.push([head, 1]);
-        if (y >= initialLength - 1) cells.push([head, columns]);
+        if (y >= firstRow + initialLength - 1) cells.push([head, columns]);
       }
     }
     const open = cells.filter(([head, stride]) => {
@@ -100,7 +108,7 @@
       }
       return true;
     });
-    const [head, stride] = open[Math.floor(Math.random() * open.length)] || cells[0] || [0, 1];
+    const [head, stride] = open[Math.floor(Math.random() * open.length)] || cells[0] || [firstRow * columns, 1];
     body = Array.from({length: cells.length ? initialLength : 1}, (_, i) => head - i * stride);
     route = [];
   }
@@ -140,6 +148,11 @@
   function tick() {
     if (document.hidden) return;
     if (layoutChanged) readPanels();
+    if (firstRow >= rows) {
+      context.clearRect(0, 0, columns * cellSize, rows * cellSize);
+      return;
+    }
+    if (body.some(cell => cell < firstRow * columns)) seedBody();
     if (food === undefined) placeFood();
     const target = queuedFood.values().next().value ?? food;
     if (target !== undefined && !route.length) {
@@ -185,6 +198,7 @@
     food = undefined;
     queuedFood.clear();
     readPanels();
+    if (firstRow >= rows) return;
     seedBody();
     placeFood();
     draw();
@@ -192,12 +206,13 @@
 
   window.addEventListener("click", event => {
     if (reducedMotion.matches || (event.pointerType && event.pointerType !== "mouse")) return;
-    if (!event.detail || event.target.closest("a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")) return;
+    if (!event.detail || event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")) return;
     const x = Math.floor(event.clientX / cellSize);
     const y = Math.floor(event.clientY / cellSize);
     if (x < 0 || x >= columns || y < 0 || y >= rows) return;
     const cell = y * columns + x;
     if (layoutChanged) readPanels();
+    if (y < firstRow) return;
     if (body.includes(cell) || queuedFood.has(cell)) return;
     if (!queuedFood.size) route = [];
     if (cell === food) food = undefined;

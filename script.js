@@ -4,6 +4,59 @@ const year = new Date().getFullYear();
 document.querySelectorAll("[data-year]").forEach((node) => { node.textContent = String(year); });
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+const navPixels = document.querySelector(".nav-pixels");
+const navContext = navPixels?.getContext("2d");
+if (navContext) {
+  let pixelFrame = 0;
+  navPixels.closest(".site-header").addEventListener("click", (event) => {
+    const link = event.target.closest("a");
+    if (!link || reducedMotion.matches) return;
+
+    cancelAnimationFrame(pixelFrame);
+    const {left, top, width, height} = navPixels.getBoundingClientRect();
+    const scale = Math.min(window.devicePixelRatio || 1, 2);
+    navPixels.width = Math.round(width * scale);
+    navPixels.height = Math.round(height * scale);
+    navContext.setTransform(scale, 0, 0, scale, 0, 0);
+    navContext.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--amber").trim();
+
+    const linkRect = link.getBoundingClientRect();
+    const originX = (event.detail ? event.clientX : linkRect.left + linkRect.width / 2) - left;
+    const originY = (event.detail ? event.clientY : linkRect.top + linkRect.height / 2) - top;
+    const pixels = [];
+    const step = 10;
+    for (let y = 4; y < height; y += step) {
+      for (let x = 4; x < width; x += step) {
+        const distance = Math.abs(x - originX) + Math.abs(y - originY) * 1.7;
+        if (distance > 50 && Math.random() < 0.48) continue;
+        pixels.push({
+          x, y,
+          delay: distance / (Math.max(originX, width - originX) + height * 1.7) * 520,
+          size: Math.random() > 0.65 ? 6 : 3,
+          strength: 0.36 + Math.random() * 0.57,
+        });
+      }
+    }
+
+    const start = performance.now();
+    const drawBurst = (now) => {
+      const elapsed = now - start;
+      navContext.clearRect(0, 0, width, height);
+      if (elapsed >= 780 || reducedMotion.matches) return;
+      for (const {x, y, delay, size, strength} of pixels) {
+        const age = Math.max(0, elapsed - delay);
+        if (elapsed < delay || age >= 230) continue;
+        navContext.globalAlpha = (1 - age / 230) * strength;
+        const edge = Math.max(1, Math.round(size * (1 - age / 300)));
+        navContext.fillRect(x, y, edge, edge);
+      }
+      navContext.globalAlpha = 1;
+      pixelFrame = requestAnimationFrame(drawBurst);
+    };
+    pixelFrame = requestAnimationFrame(drawBurst);
+  });
+}
+
 const hero = document.querySelector(".hero");
 const replayIntro = new URLSearchParams(location.search).get("intro") === "1";
 const reloadingPage = performance.getEntriesByType("navigation")[0]?.type === "reload";
