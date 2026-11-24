@@ -303,7 +303,9 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
   .has-js .reveal{opacity:1;transform:none}
   .ticker-track,.mosaic-track{transform:none!important}
   .ticker-group[data-loop-clone],.mosaic-board[data-loop-clone]{display:none}
-  .ticker-group:not([data-loop-clone]){width:100vw;justify-content:space-around;padding-right:0}
+  .ticker-track{width:100%}
+  .ticker-group:not([data-loop-clone]){width:100%;flex-wrap:wrap;justify-content:center;gap:.4rem .9rem;padding-inline:1rem}
+  .ticker-group i:last-child{display:none}
 }
 @media(max-width:900px){
   .hero-photo-panel{height:auto;aspect-ratio:auto}
