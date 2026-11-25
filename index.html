@@ -14,9 +14,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/niorb-portrait-extension.png">
-<link rel="stylesheet" href="styles.css?v=gesture-ink">
-<script src="script.js?v=pixel-nav" defer></script>
-<script src="background-snake.js?v=gesture-ink" defer></script>
+<link rel="stylesheet" href="styles.css?v=helix-3d">
+<script src="script.js?v=helix-3d" defer></script>
+<script src="background-snake.js?v=fish-egg" defer></script>
+<script src="fish-egg.js?v=1" defer></script>
 </head>
 <body>
 <svg class="palette-definitions" width="0" height="0" aria-hidden="true" focusable="false">
@@ -34,6 +35,8 @@
 <canvas class="background-dots" aria-hidden="true"></canvas>
 <canvas class="background-snake" aria-hidden="true"></canvas>
 <canvas class="gesture-ink" aria-hidden="true"></canvas>
+<img class="fish-egg" src="assets/easter-eggs/fih-boxer.webp" alt="Pez con guantes de boxeo" hidden>
+<audio id="fih-sound" src="assets/easter-eggs/fih.mp3" preload="auto"></audio>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
 <header class="site-header">
   <canvas class="nav-pixels" aria-hidden="true"></canvas>
@@ -120,30 +123,150 @@
     </div>
   </div>
 
-  <section class="projects section-wrap" id="proyectos">
-    <div class="section-heading reveal"><div><p class="eyebrow">01 / TRABAJO SELECCIONADO</p><h2>Proyectos<span class="pink-dot">.</span></h2></div><p class="section-aside">Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.</p></div>
-    <div class="project-grid">
-      <article class="project-card project-feature reveal">
-        <div class="card-topline"><span>WEB APP · 01</span><span class="card-index">01</span></div><div class="feature-decoration" aria-hidden="true"><span>↗</span><i></i><b></b></div>
-        <p class="project-kicker">ENTRECAPAS / ROPERO DIGITAL</p><h3>Tu ropa.<br>Otra perspectiva.</h3>
-        <p class="project-description">Guarda prendas, arma conjuntos y juega con un probador 2D. El ropero se conserva localmente en el dispositivo.</p>
-        <div class="tag-row"><span>React</span><span>TypeScript</span><span>IndexedDB</span></div>
-        <div class="card-links"><a href="https://ropero-virtual-norel.nicolasomgb.chatgpt.site" target="_blank" rel="noreferrer">Abrir la app ↗</a><a href="https://github.com/NiorbDev/Ropero-Virtual" target="_blank" rel="noreferrer">Código ↗</a></div>
-      </article>
-      <article class="project-card project-solver reveal">
-        <div class="card-topline"><span>ALGORITMOS · 02</span><span class="card-index">02</span></div><p class="project-kicker">COLOR BLOCK JAM / SOLVER</p><h3>Buscar la salida.</h3>
-        <p class="project-description">Solver de consola en C++ que explora niveles configurables con A* y anima la secuencia encontrada.</p>
-        <div class="tag-row"><span>C++</span><span>A*</span><span>Pathfinding</span></div>
-        <a class="card-link" href="https://github.com/NiorbDev/ColorBlockJam_Solver" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
-        <div class="solver-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>→</b></div>
-      </article>
-      <article class="project-card project-hough reveal">
-        <div class="card-topline"><span>PROCESAMIENTO · 03</span><span class="card-index">03</span></div><p class="project-kicker">IMAGEN BINARIA / HOUGH</p><h3>Círculos<br>entre ruido.</h3>
-        <p class="project-description">Pipeline multiproceso en C que preprocesa imágenes binarias y detecta centros con la Transformada de Hough.</p>
-        <div class="tag-row"><span>C</span><span>POSIX</span><span>Hough</span></div>
-        <a class="card-link" href="https://github.com/NiorbDev/deteccion-circulos-hough" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
-        <div class="hough-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
-      </article>
+  <section class="projects" id="proyectos" aria-labelledby="proyectos-title">
+    <div class="projects-helix-track">
+      <div class="projects-sticky">
+        <div class="section-wrap projects-chrome">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">01 / TRABAJO SELECCIONADO</p>
+              <h2 id="proyectos-title">Proyectos<span class="pink-dot">.</span></h2>
+            </div>
+            <p class="section-aside">Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.</p>
+          </div>
+        </div>
+
+        <div class="helix-stage" role="region" aria-label="Galería helicoidal 3D de proyectos">
+          <div class="helix-axis" aria-hidden="true">
+            <span class="helix-axis-mark helix-axis-mark--top">+</span>
+            <span class="helix-axis-line"></span>
+            <span class="helix-axis-mark helix-axis-mark--bottom">+</span>
+          </div>
+          <div class="helix-focal-frame" aria-hidden="true">
+            <span class="focal-bracket focal-bracket--tl"></span>
+            <span class="focal-bracket focal-bracket--tr"></span>
+            <span class="focal-bracket focal-bracket--bl"></span>
+            <span class="focal-bracket focal-bracket--br"></span>
+            <span class="focal-label">FOCO // 00°</span>
+          </div>
+
+          <div class="helix-viewport">
+            <div class="helix-rotor">
+              <article class="project-card helix-card project-feature" data-helix-card="0" data-index="01">
+                <div class="helix-face helix-face--front">
+                  <div class="helix-card-body">
+                    <div class="card-topline"><span>WEB APP · 01</span><span class="card-index">01</span></div>
+                    <p class="project-kicker">ENTRECAPAS / ROPERO DIGITAL</p>
+                    <h3>Tu ropa.<br>Otra perspectiva.</h3>
+                    <p class="project-description">Guarda prendas, arma conjuntos y juega con un probador 2D. El ropero se conserva localmente en el dispositivo.</p>
+                    <div class="tag-row"><span>React</span><span>TypeScript</span><span>IndexedDB</span></div>
+                    <div class="card-links"><a href="https://ropero-virtual-norel.nicolasomgb.chatgpt.site" target="_blank" rel="noreferrer">Abrir la app ↗</a><a href="https://github.com/NiorbDev/Ropero-Virtual" target="_blank" rel="noreferrer">Código ↗</a></div>
+                  </div>
+                  <div class="helix-card-visual">
+                    <div class="helix-plate image-slot">
+                      <img src="assets/gallery/projects/entrecapas-coleccion.webp" alt="Captura de colección en EntreCapas." decoding="async">
+                      <span class="helix-plate-stamp">LÁMINA 01 / UI</span>
+                    </div>
+                    <div class="feature-decoration" aria-hidden="true"><span>↗</span><i></i><b></b></div>
+                  </div>
+                </div>
+                <div class="helix-face helix-face--back" aria-hidden="true">
+                  <div class="helix-back-frame">
+                    <div class="helix-back-head"><span>ARCHIVO · ND—01</span><span>REVERSO DE LÁMINA</span></div>
+                    <div class="helix-back-core">
+                      <strong>01</strong>
+                      <span>ENTRECAPAS / ROPERO DIGITAL</span>
+                    </div>
+                    <div class="helix-back-foot"><span>REACT · TYPESCRIPT · INDEXEDDB</span><span>TRAER AL FRENTE ↻</span></div>
+                  </div>
+                </div>
+                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>01 · ENTRECAPAS</span></div>
+                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>01 · ENTRECAPAS</span></div>
+              </article>
+
+              <article class="project-card helix-card project-solver" data-helix-card="1" data-index="02">
+                <div class="helix-face helix-face--front">
+                  <div class="helix-card-body">
+                    <div class="card-topline"><span>ALGORITMOS · 02</span><span class="card-index">02</span></div>
+                    <p class="project-kicker">COLOR BLOCK JAM / SOLVER</p>
+                    <h3>Buscar la salida.</h3>
+                    <p class="project-description">Solver de consola en C++ que explora niveles configurables con A* y anima la secuencia encontrada.</p>
+                    <div class="tag-row"><span>C++</span><span>A*</span><span>Pathfinding</span></div>
+                    <a class="card-link" href="https://github.com/NiorbDev/ColorBlockJam_Solver" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
+                  </div>
+                  <div class="helix-card-visual">
+                    <div class="helix-plate helix-plate--contain image-slot">
+                      <img src="assets/gallery/projects/solver-ejecucion.png" alt="Tablero y resultado de Color Block Jam Solver." decoding="async">
+                      <span class="helix-plate-stamp">LÁMINA 02 / A*</span>
+                    </div>
+                    <div class="solver-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>→</b></div>
+                  </div>
+                </div>
+                <div class="helix-face helix-face--back" aria-hidden="true">
+                  <div class="helix-back-frame">
+                    <div class="helix-back-head"><span>ARCHIVO · ND—02</span><span>REVERSO DE LÁMINA</span></div>
+                    <div class="helix-back-core">
+                      <strong>02</strong>
+                      <span>COLOR BLOCK JAM / SOLVER</span>
+                    </div>
+                    <div class="helix-back-foot"><span>C++ · A* · PATHFINDING</span><span>TRAER AL FRENTE ↻</span></div>
+                  </div>
+                </div>
+                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>02 · SOLVER A*</span></div>
+                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>02 · SOLVER A*</span></div>
+              </article>
+
+              <article class="project-card helix-card project-hough" data-helix-card="2" data-index="03">
+                <div class="helix-face helix-face--front">
+                  <div class="helix-card-body">
+                    <div class="card-topline"><span>PROCESAMIENTO · 03</span><span class="card-index">03</span></div>
+                    <p class="project-kicker">IMAGEN BINARIA / HOUGH</p>
+                    <h3>Círculos<br>entre ruido.</h3>
+                    <p class="project-description">Pipeline multiproceso en C que preprocesa imágenes binarias y detecta centros con la Transformada de Hough.</p>
+                    <div class="tag-row"><span>C</span><span>POSIX</span><span>Hough</span></div>
+                    <a class="card-link" href="https://github.com/NiorbDev/deteccion-circulos-hough" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
+                  </div>
+                  <div class="helix-card-visual">
+                    <div class="helix-plate helix-plate--contain image-slot">
+                      <img src="assets/gallery/projects/hough-ejecucion.png" alt="Centros detectados con la Transformada de Hough." decoding="async">
+                      <span class="helix-plate-stamp">LÁMINA 03 / C</span>
+                    </div>
+                    <div class="hough-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+                  </div>
+                </div>
+                <div class="helix-face helix-face--back" aria-hidden="true">
+                  <div class="helix-back-frame">
+                    <div class="helix-back-head"><span>ARCHIVO · ND—03</span><span>REVERSO DE LÁMINA</span></div>
+                    <div class="helix-back-core">
+                      <strong>03</strong>
+                      <span>IMAGEN BINARIA / HOUGH</span>
+                    </div>
+                    <div class="helix-back-foot"><span>C · POSIX · HOUGH</span><span>TRAER AL FRENTE ↻</span></div>
+                  </div>
+                </div>
+                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
+                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>03 · HOUGH</span></div>
+                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>03 · HOUGH</span></div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-wrap projects-hud">
+          <div class="helix-steps" role="group" aria-label="Seleccionar proyecto en la hélice">
+            <button type="button" class="helix-step is-active" data-helix-jump="0" aria-current="step"><span>01</span> EntreCapas</button>
+            <button type="button" class="helix-step" data-helix-jump="1"><span>02</span> Jam Solver</button>
+            <button type="button" class="helix-step" data-helix-jump="2"><span>03</span> Hough C</button>
+          </div>
+          <div class="helix-progress" aria-hidden="true"><i class="helix-progress-fill"></i></div>
+          <p class="helix-telemetry" aria-live="polite"><span data-helix-readout>01 / 03 · +000°</span></p>
+        </div>
+      </div>
     </div>
   </section>
 

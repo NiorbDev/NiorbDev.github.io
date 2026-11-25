@@ -311,3 +311,153 @@ if ("IntersectionObserver" in window) {
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
+
+const helixTrack = document.querySelector(".projects-helix-track");
+const helixSticky = document.querySelector(".projects-sticky");
+const helixStage = document.querySelector(".helix-stage");
+const helixRotor = document.querySelector(".helix-rotor");
+const helixCards = Array.from(document.querySelectorAll("[data-helix-card]"));
+const helixStepButtons = Array.from(document.querySelectorAll("[data-helix-jump]"));
+const helixProgressFill = document.querySelector(".helix-progress-fill");
+const helixReadout = document.querySelector("[data-helix-readout]");
+const siteHeader = document.querySelector(".site-header");
+
+if (helixTrack && helixSticky && helixStage && helixRotor && helixCards.length) {
+  const stepAngleDeg = 115;
+  const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
+  let cardWidth = 640;
+  let stageHeight = 520;
+  let headerHeight = 76;
+  let helixFrame = 0;
+
+  const measureHelix = () => {
+    headerHeight = siteHeader ? Math.round(siteHeader.getBoundingClientRect().height) : 76;
+    document.documentElement.style.setProperty("--sticky-top", `${headerHeight}px`);
+    helixTrack.style.setProperty("--helix-scroll-span", `${Math.max(1, helixCards.length - 1) * 95}svh`);
+
+    if (reducedMotion.matches) return;
+    cardWidth = helixRotor.offsetWidth || 640;
+    stageHeight = helixStage.offsetHeight || 520;
+    const perspective = Math.max(960, Math.round(cardWidth * 2.05));
+    helixStage.style.setProperty("--helix-perspective", `${perspective}px`);
+  };
+
+  const renderHelix = () => {
+    helixFrame = 0;
+
+    if (reducedMotion.matches) {
+      helixCards.forEach((card) => {
+        card.style.removeProperty("transform");
+        card.style.removeProperty("--depth-shade");
+        delete card.dataset.facing;
+        delete card.dataset.active;
+      });
+      return;
+    }
+
+    const trackRect = helixTrack.getBoundingClientRect();
+    const travel = Math.max(1, helixTrack.offsetHeight - helixSticky.offsetHeight);
+    const scrolled = headerHeight - trackRect.top;
+    const progress = Math.min(1, Math.max(0, scrolled / travel));
+    const count = helixCards.length;
+    const activeFloat = progress * (count - 1);
+
+    const radius = Math.max(195, cardWidth * 0.58);
+    const stepY = Math.min(135, Math.max(76, stageHeight * 0.21));
+    const pitch = stepY / stepAngleRad;
+
+    helixCards.forEach((card, index) => {
+      const theta = (index - activeFloat) * stepAngleRad;
+      const sinTheta = Math.sin(theta);
+      const cosTheta = Math.cos(theta);
+      const x = radius * sinTheta;
+      // Offset by -radius so the protagonist card at theta = 0 sits at z = 0 for 1:1 crisp rendering.
+      const z = radius * cosTheta - radius;
+      const y = theta * pitch;
+      const rotDeg = (theta * 180) / Math.PI;
+      const absDeg = Math.abs(rotDeg);
+      const depthShade = Math.min(0.46, Math.max(0, (1 - cosTheta) * 0.23));
+
+      card.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateY(${rotDeg.toFixed(2)}deg)`;
+      card.style.setProperty("--depth-shade", depthShade.toFixed(3));
+      card.dataset.facing = absDeg < 76 ? "front" : absDeg <= 104 ? "edge" : "back";
+      card.dataset.active = absDeg < 28 ? "true" : "false";
+    });
+
+    const nearestIndex = Math.round(activeFloat);
+    helixStepButtons.forEach((button, index) => {
+      const isCurrent = index === nearestIndex;
+      button.classList.toggle("is-active", isCurrent);
+      if (isCurrent) button.setAttribute("aria-current", "step");
+      else button.removeAttribute("aria-current");
+    });
+
+    if (helixProgressFill) {
+      helixProgressFill.style.transform = `scaleX(${progress.toFixed(4)})`;
+    }
+    if (helixReadout) {
+      const idxText = String(nearestIndex + 1).padStart(2, "0");
+      const totalText = String(count).padStart(2, "0");
+      const helixDeg = String(Math.round(activeFloat * stepAngleDeg)).padStart(3, "0");
+      helixReadout.textContent = `${idxText} / ${totalText} · ${helixDeg}°`;
+    }
+  };
+
+  const queueHelix = () => {
+    if (!helixFrame) helixFrame = requestAnimationFrame(renderHelix);
+  };
+
+  const scrollToHelixIndex = (index) => {
+    const count = helixCards.length;
+    const targetProgress = count > 1 ? index / (count - 1) : 0;
+    const trackTop = helixTrack.getBoundingClientRect().top + window.scrollY;
+    const travel = Math.max(1, helixTrack.offsetHeight - helixSticky.offsetHeight);
+    const targetY = trackTop - headerHeight + targetProgress * travel;
+    window.scrollTo({
+      top: Math.round(targetY),
+      behavior: reducedMotion.matches ? "auto" : "smooth",
+    });
+  };
+
+  helixStepButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetIndex = Number(button.dataset.helixJump);
+      if (!Number.isNaN(targetIndex)) scrollToHelixIndex(targetIndex);
+    });
+  });
+
+  helixCards.forEach((card, index) => {
+    card.addEventListener("click", (event) => {
+      if (reducedMotion.matches || card.dataset.active === "true") return;
+      if (event.target.closest("a")) event.preventDefault();
+      scrollToHelixIndex(index);
+    });
+    card.addEventListener("focusin", () => {
+      if (reducedMotion.matches || card.dataset.active === "true") return;
+      scrollToHelixIndex(index);
+    });
+  });
+
+  window.addEventListener("scroll", queueHelix, { passive: true });
+  window.addEventListener("resize", () => {
+    measureHelix();
+    queueHelix();
+  }, { passive: true });
+
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver(() => {
+      measureHelix();
+      queueHelix();
+    });
+    if (siteHeader) ro.observe(siteHeader);
+    ro.observe(helixStage);
+  }
+
+  reducedMotion.addEventListener("change", () => {
+    measureHelix();
+    queueHelix();
+  });
+
+  measureHelix();
+  renderHelix();
+}

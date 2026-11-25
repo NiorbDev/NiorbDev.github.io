@@ -315,10 +315,13 @@
   }, {passive: true});
 
   function releaseTrail(event) {
-    if (!activeTrail || (event && activeTrail.pointerId !== event.pointerId)) return;
+    if (!activeTrail || (event?.pointerId !== undefined && activeTrail.pointerId !== event.pointerId)) return;
     if (event?.type === "pointerup" && activeTrail.length) extendTrail(event);
     if (activeTrail.length) {
       suppressClick = true;
+      if (event?.type === "pointerup" || event?.type === "touchend") {
+        window.dispatchEvent(new CustomEvent("portfolio:stroke", {detail: activeTrail.points}));
+      }
       if (reducedMotion.matches) {
         trails.splice(trails.indexOf(activeTrail), 1);
         drawTrails(performance.now());
@@ -365,9 +368,9 @@
     extendTrail(touch);
   }, {passive: false});
   for (const type of ["touchend", "touchcancel"]) {
-    window.addEventListener(type, () => {
+    window.addEventListener(type, event => {
       pendingTouch = undefined;
-      if (activeTrail?.pointerId === "touch") releaseTrail();
+      if (activeTrail?.pointerId === "touch") releaseTrail(event);
     }, {passive: true});
   }
 
