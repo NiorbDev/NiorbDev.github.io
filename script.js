@@ -383,6 +383,7 @@ if (projectsSection && projectsPress && projectSheets.length) {
       button.setAttribute("aria-pressed", enabled ? "true" : "false");
     });
     if (darkroomPill) darkroomPill.hidden = !enabled;
+    if (enabled) projectCards.forEach((card) => card.classList.remove("is-previewing"));
   };
 
   darkroomToggles.forEach((button) => {
@@ -400,6 +401,10 @@ if (projectsSection && projectsPress && projectSheets.length) {
   projectCards.forEach((card) => {
     card.addEventListener("pointermove", (event) => {
       if (event.pointerType !== "mouse") return;
+      if (event.target.closest("a, button") || document.documentElement.classList.contains("is-darkroom")) {
+        card.classList.remove("is-previewing");
+        return;
+      }
       const bounds = card.getBoundingClientRect();
       card.style.setProperty("--preview-x", `${event.clientX - bounds.left - card.clientLeft}px`);
       card.style.setProperty("--preview-y", `${event.clientY - bounds.top - card.clientTop}px`);

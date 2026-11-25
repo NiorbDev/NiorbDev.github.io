@@ -279,8 +279,8 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 
 .project-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1rem}
 .project-grid[hidden]{display:none}
-.project-card{min-height:350px;position:relative;isolation:isolate;overflow:hidden;padding:clamp(1.25rem,3vw,2.25rem);display:flex;border:1px solid rgba(247,246,242,.35);background:var(--charcoal);transition:transform .35s cubic-bezier(.2,.75,.25,1),border-color .25s,background-color .35s,color .35s}
-.project-card:hover{transform:translateY(-5px);border-color:var(--amber)}
+.project-card{--lens-radius:42px;min-height:350px;position:relative;isolation:isolate;overflow:hidden;padding:clamp(1.25rem,3vw,2.25rem);display:flex;border:1px solid rgba(247,246,242,.35);background:var(--charcoal);transition:transform .35s cubic-bezier(.2,.75,.25,1),border-color .25s,background-color .35s,color .35s}
+.project-card:hover{border-color:var(--amber)}
 .project-surface{position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:flex-start;transition:opacity .3s ease}
 .project-feature{grid-column:1/span 7;grid-row:1/span 2;min-height:610px;color:var(--noir);background:var(--amber);border:0}
 .project-feature:hover{border-color:var(--ivory)}
@@ -309,10 +309,36 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
   pointer-events:none;
   background:var(--noir);
   opacity:0;
-  mask-image:radial-gradient(circle 52px at var(--preview-x,50%) var(--preview-y,50%),#000 22%,transparent 100%);
+  mask-image:radial-gradient(circle var(--lens-radius) at var(--preview-x,50%) var(--preview-y,50%),#000 96%,transparent 100%);
   transition:opacity .18s ease;
 }
+html:not(.is-darkroom) .project-card.is-previewing{cursor:none}
 .project-card.is-previewing .project-xray{opacity:1}
+html:not(.is-darkroom) .project-card.is-previewing::before,
+html:not(.is-darkroom) .project-card.is-previewing::after{
+  content:"";
+  position:absolute;
+  left:var(--preview-x);
+  top:var(--preview-y);
+  z-index:5;
+  pointer-events:none;
+}
+html:not(.is-darkroom) .project-card.is-previewing::before{
+  width:calc(2 * var(--lens-radius));
+  height:calc(2 * var(--lens-radius));
+  border:2px solid var(--amber);
+  border-radius:50%;
+  outline:1px solid var(--noir);
+  transform:translate(-50%,-50%);
+}
+html:not(.is-darkroom) .project-card.is-previewing::after{
+  width:22px;
+  height:6px;
+  background:var(--amber);
+  border:1px solid var(--noir);
+  transform-origin:left center;
+  transform:translate(calc(var(--lens-radius) * .707),calc(var(--lens-radius) * .707 - 3px)) rotate(45deg);
+}
 html.is-darkroom .project-card .project-xray{z-index:2;opacity:1;mask-image:none;transition:none}
 html.is-darkroom .project-surface{pointer-events:none}
 html.is-darkroom .project-surface > :not(.card-links,.card-link){opacity:0}
