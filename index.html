@@ -14,9 +14,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/niorb-portrait-extension.webp">
-<link rel="stylesheet" href="styles.css?v=portfolio-beta">
+<link rel="stylesheet" href="styles.css?v=applied-ai">
 <script src="script.js?v=frame-budget" defer></script>
-<script src="background-snake.js?v=portfolio-beta" defer></script>
+<script src="background-snake.js?v=applied-ai" defer></script>
 <script src="fish-egg.js?v=2" defer></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
 <header class="site-header">
   <canvas class="nav-pixels" aria-hidden="true"></canvas>
   <a class="wordmark" href="#inicio" aria-label="NiorbDev, inicio"><span class="wordmark-symbol">N<span>/</span></span><span class="wordmark-name">NIORBDEV<small>PORTAFOLIO / <span data-year>2026</span></small></span></a>
-  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Stack <span>02</span></a><a href="#perfil">Perfil <span>03</span></a><a href="#redes">Redes <span>04</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Stack <span>02</span></a><a href="#perfil">Perfil <span>03</span></a><a href="#ia">IA <span>04</span></a><a href="#redes">Redes <span>05</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </header>
 <main id="contenido">
   <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
@@ -310,8 +310,8 @@
     </dl>
   </section>
   <section class="profile section-wrap" id="perfil" aria-labelledby="profile-title">
+    <h2 class="reveal" id="profile-title">Sobre mí<span class="pink-dot" aria-hidden="true">.</span></h2>
     <div class="profile-copy reveal">
-      <h2 id="profile-title">Sobre mí<span class="pink-dot" aria-hidden="true">.</span></h2>
       <p>Soy Nico Orellana. Me gusta partir de un problema cotidiano, construir algo que pueda usar y pulirlo probándolo. Trabajo en interfaces web, herramientas personales, automatizaciones y prototipos.</p>
       <p>Me interesa colaborar en apps que simplifiquen un proceso, herramientas que conecten servicios y prototipos con IA que se puedan probar pronto.</p>
       <div class="profile-actions">
@@ -319,15 +319,28 @@
         <span class="social-status">CV · Próximamente</span>
       </div>
     </div>
-    <aside class="ai-panel reveal" aria-labelledby="ai-title">
-      <h3 id="ai-title">IA aplicada<span aria-hidden="true">.</span></h3>
-      <p>Trabajo con IA a lo largo del desarrollo, desde explorar una idea hasta automatizar flujos y revisar el código.</p>
-      <dl class="ai-list">
-        <div><dt>Agentes y asistentes</dt><dd>Diseño instrucciones, contexto y pasos para que puedan usar herramientas y completar tareas concretas.</dd></div>
-        <div><dt>Automatización</dt><dd>Conecto modelos con archivos, APIs y flujos de trabajo para reducir tareas repetitivas.</dd></div>
-        <div><dt>Pruebas y revisión</dt><dd>Compruebo las salidas con ejemplos reales y reviso el código antes de integrarlo.</dd></div>
-      </dl>
-    </aside>
+  </section>
+  <section class="ai-section section-wrap" id="ia" aria-labelledby="ai-title">
+    <div class="ai-heading reveal">
+      <h2 id="ai-title">IA aplicada<span class="pink-dot" aria-hidden="true">.</span></h2>
+      <p>Diseño asistentes con memoria, conecto modelos con herramientas y automatizo tareas que uso en mis propios proyectos.</p>
+    </div>
+    <dl class="ai-panel ai-list reveal">
+      <div><dt>Automatización</dt><dd>Transformo tareas repetitivas en flujos que leen información, la procesan y generan un resultado que se puede revisar.</dd></div>
+      <div><dt>Cerebro en Obsidian</dt><dd>Construyo una memoria para asistentes con notas enlazadas, índices y reglas para recuperar contexto y rastrear de dónde sale cada dato.</dd></div>
+      <div><dt>Integración por API</dt><dd>Conecto modelos y servicios para trabajar con datos externos, llamar herramientas y devolver resultados estructurados.</dd></div>
+      <div><dt>Interfaces de línea de comandos</dt><dd>Creo CLIs para ejecutar procesos desde la terminal y combinar sus resultados con scripts y automatizaciones.</dd></div>
+      <div><dt>Skills reutilizables</dt><dd>Uso y adapto skills para definir instrucciones, herramientas y verificaciones que un asistente puede repetir en distintas tareas.</dd></div>
+      <div><dt>Creación y coordinación de agentes</dt><dd>Configuro agentes con roles y herramientas, reparto tareas entre ellos y reviso sus entregas antes de integrarlas.</dd></div>
+    </dl>
+    <div class="ai-examples reveal">
+      <h3>Dónde lo he aplicado</h3>
+      <ul role="list">
+        <li><strong>Widget Diario</strong> Lleva al celular un panel de pendientes y agenda que se alimenta de una nota.</li>
+        <li><strong>Mi espacio en Obsidian</strong> Uso notas y registros enlazados para retomar proyectos y recuperar decisiones con ayuda de un asistente.</li>
+        <li><strong>Este portafolio</strong> He usado agentes para probar ideas visuales, implementar interacciones y revisar rendimiento.</li>
+      </ul>
+    </div>
   </section>
   <section class="case-study section-wrap" id="fitamon" aria-labelledby="case-title">
     <div class="case-copy reveal">
@@ -354,7 +367,7 @@
       <li><a class="social-row" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer"><strong>GitHub</strong><span class="social-status">@NiorbDev <span aria-hidden="true">↗</span></span></a></li>
     </ul>
   </section>
-  <section class="closing section-wrap reveal"><p class="eyebrow">04 / SIGUE EL RASTRO</p><h2>Más código.<br><span>Menos ruido.</span></h2><a class="closing-link" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Explorar GitHub ↗</a><div class="closing-stamp" aria-hidden="true">ND<br>2026</div></section>
+  <section class="closing section-wrap reveal"><p class="eyebrow">06 / SIGUE EL RASTRO</p><h2>Más código.<br><span>Menos ruido.</span></h2><a class="closing-link" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Explorar GitHub ↗</a><div class="closing-stamp" aria-hidden="true">ND<br>2026</div></section>
 </main>
 <button type="button" class="darkroom-pill" data-darkroom-toggle aria-pressed="false" hidden><i class="signal-dot" aria-hidden="true"></i> CUARTO OSCURO · SALIR</button>
 <footer class="site-footer"><a class="footer-mark" href="#inicio">N<span>/</span></a><span>NIORBDEV · PORTAFOLIO PERSONAL</span><a href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GITHUB ↗</a><span>© <span data-year>2026</span></span></footer>
