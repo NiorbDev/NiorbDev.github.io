@@ -25,6 +25,15 @@
   let layoutChanged = true;
   let timer;
   let scrollFrame = 0;
+  const trails = [];
+  const fadeDuration = 1000;
+  let activeTrail;
+  let trailFrame = 0;
+  let suppressClick = false;
+
+  function isBackground(event) {
+    return !event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker");
+  }
 
   function neighbors(cell) {
     const x = cell % columns;
@@ -148,7 +157,44 @@
     }
     if (food !== undefined) drawFood(food, false);
     for (const cell of queuedFood) drawFood(cell, true);
+    drawTrails(performance.now());
     context.restore();
+  }
+
+  function drawTrails(now) {
+    context.strokeStyle = amber;
+    context.lineWidth = 2.5;
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let i = trails.length - 1; i >= 0; i--) {
+      const {points, length, releasedAt} = trails[i];
+      if (!length) continue;
+      const progress = releasedAt === undefined ? 0 : (now - releasedAt) / fadeDuration;
+      if (progress >= 1) {
+        trails.splice(i, 1);
+        continue;
+      }
+
+      const erasedLength = progress * length;
+      const start = points.findIndex(point => point.distance > erasedLength);
+      if (start < 1) continue;
+      const previous = points[start - 1];
+      const next = points[start];
+      const fraction = (erasedLength - previous.distance) / (next.distance - previous.distance);
+      context.globalAlpha = 0.88 * (1 - progress * 0.6);
+      context.beginPath();
+      context.moveTo(previous.x + (next.x - previous.x) * fraction, previous.y + (next.y - previous.y) * fraction);
+      for (let j = start; j < points.length; j++) context.lineTo(points[j].x, points[j].y);
+      context.stroke();
+    }
+  }
+
+  function animateTrails() {
+    trailFrame = 0;
+    draw();
+    if (trails.some(trail => trail.releasedAt !== undefined)) {
+      trailFrame = requestAnimationFrame(animateTrails);
+    }
   }
 
   function drawFood(cell, requested) {
@@ -221,9 +267,56 @@
     draw();
   }
 
+  window.addEventListener("pointerdown", event => {
+    suppressClick = false;
+    if (event.pointerType !== "mouse" || event.button !== 0 || reducedMotion.matches || !isBackground(event)) return;
+    activeTrail = {
+      pointerId: event.pointerId,
+      points: [{x: event.clientX, y: event.clientY + window.scrollY, distance: 0}],
+      length: 0,
+    };
+    trails.push(activeTrail);
+    event.preventDefault();
+  });
+
+  function extendTrail(event) {
+    const point = {x: event.clientX, y: event.clientY + window.scrollY};
+    const previous = activeTrail.points.at(-1);
+    const distance = Math.hypot(point.x - previous.x, point.y - previous.y);
+    if (distance < (activeTrail.length ? 2 : 5)) return;
+    activeTrail.length += distance;
+    activeTrail.points.push({...point, distance: activeTrail.length});
+    draw();
+  }
+
+  window.addEventListener("pointermove", event => {
+    if (activeTrail?.pointerId === event.pointerId && (event.buttons & 1)) extendTrail(event);
+  }, {passive: true});
+
+  function releaseTrail(event) {
+    if (!activeTrail || (event && activeTrail.pointerId !== event.pointerId)) return;
+    if (event?.type === "pointerup" && activeTrail.length) extendTrail(event);
+    if (activeTrail.length) {
+      suppressClick = true;
+      activeTrail.releasedAt = performance.now();
+      if (!trailFrame) trailFrame = requestAnimationFrame(animateTrails);
+    } else {
+      trails.splice(trails.indexOf(activeTrail), 1);
+    }
+    activeTrail = undefined;
+  }
+  window.addEventListener("pointerup", releaseTrail);
+  window.addEventListener("pointercancel", releaseTrail);
+  window.addEventListener("blur", () => releaseTrail());
+
   window.addEventListener("click", event => {
     if (reducedMotion.matches || (event.pointerType && event.pointerType !== "mouse")) return;
-    if (!event.detail || event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")) return;
+    if (event.detail && suppressClick) {
+      suppressClick = false;
+      event.preventDefault();
+      return;
+    }
+    if (!event.detail || !isBackground(event)) return;
     const x = Math.floor(event.clientX / cellSize);
     const y = Math.floor((event.clientY + window.scrollY) / cellSize);
     if (layoutChanged) readPanels();
@@ -249,6 +342,10 @@
   window.addEventListener("resize", () => { if (!reducedMotion.matches) resize(); }, {passive: true});
   const syncMotion = () => {
     window.clearInterval(timer);
+    cancelAnimationFrame(trailFrame);
+    trailFrame = 0;
+    activeTrail = undefined;
+    trails.length = 0;
     if (reducedMotion.matches) return;
     resize();
     timer = window.setInterval(tick, 112);
