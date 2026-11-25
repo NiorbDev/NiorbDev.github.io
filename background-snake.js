@@ -10,7 +10,7 @@
   const amber = palette.getPropertyValue("--amber").trim();
   const ivory = palette.getPropertyValue("--ivory").trim();
   const header = document.querySelector(".site-header");
-  const panels = [...document.querySelectorAll(".hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker")];
+  const panels = [...document.querySelectorAll(".hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.social-list,.ticker")];
   const cellSize = 10;
   const initialLength = 5;
   const maxLength = 18;
@@ -34,7 +34,7 @@
   let suppressClick = false;
 
   function isBackground(event) {
-    return !event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker");
+    return !event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.social-list,.ticker");
   }
 
   function canDraw(event) {
