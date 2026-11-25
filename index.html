@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/niorb-portrait-extension.png">
-<link rel="stylesheet" href="styles.css?v=helix-3d">
-<script src="script.js?v=helix-3d" defer></script>
+<link rel="stylesheet" href="styles.css?v=darkroom-press">
+<script src="script.js?v=darkroom-press" defer></script>
 <script src="background-snake.js?v=fish-egg" defer></script>
 <script src="fish-egg.js?v=1" defer></script>
 </head>
@@ -123,149 +123,129 @@
     </div>
   </div>
 
-  <section class="projects" id="proyectos" aria-labelledby="proyectos-title">
-    <div class="projects-helix-track">
-      <div class="projects-sticky">
-        <div class="section-wrap projects-chrome">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">01 / TRABAJO SELECCIONADO</p>
-              <h2 id="proyectos-title">Proyectos<span class="pink-dot">.</span></h2>
-            </div>
-            <p class="section-aside">Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.</p>
+  <section class="projects section-wrap" id="proyectos">
+    <div class="section-heading reveal">
+      <div><p class="eyebrow">01 / TRABAJO SELECCIONADO</p><h2>Proyectos<span class="pink-dot">.</span></h2></div>
+      <div class="projects-controls">
+        <p class="section-aside">Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.</p>
+        <div class="projects-toolbar" role="group" aria-label="Controles de edición e inspección">
+          <div class="sheet-pager" role="group" aria-label="Cambiar pliego de proyectos">
+            <button type="button" class="pager-btn" data-sheet-prev aria-label="Pliego anterior">←</button>
+            <span class="pager-status" data-sheet-status>PLIEGO 01 / 02</span>
+            <button type="button" class="pager-btn" data-sheet-next aria-label="Siguiente pliego">→</button>
           </div>
+          <button type="button" class="inspect-toggle" data-darkroom-toggle aria-pressed="false">
+            <i class="inspect-lamp" aria-hidden="true"></i>
+            <span>MODO INSPECCIÓN</span>
+          </button>
         </div>
+      </div>
+    </div>
 
-        <div class="helix-stage" role="region" aria-label="Galería helicoidal 3D de proyectos">
-          <div class="helix-axis" aria-hidden="true">
-            <span class="helix-axis-mark helix-axis-mark--top">+</span>
-            <span class="helix-axis-line"></span>
-            <span class="helix-axis-mark helix-axis-mark--bottom">+</span>
+    <div class="projects-press">
+      <div class="projects-print-pass" aria-hidden="true"></div>
+
+      <div class="project-grid is-active-sheet" data-project-sheet="0" data-sheet-note="Tres formas de resolver problemas: una interfaz, una búsqueda y un pipeline.">
+        <article class="project-card project-feature reveal">
+          <div class="project-surface">
+            <div class="card-topline"><span>WEB APP · 01</span><span class="card-index">01</span></div><div class="feature-decoration" aria-hidden="true"><span>↗</span><i></i><b></b></div>
+            <p class="project-kicker">ENTRECAPAS / ROPERO DIGITAL</p><h3>Tu ropa.<br>Otra perspectiva.</h3>
+            <p class="project-description">Guarda prendas, arma conjuntos y juega con un probador 2D. El ropero se conserva localmente en el dispositivo.</p>
+            <div class="tag-row"><span>React</span><span>TypeScript</span><span>IndexedDB</span></div>
+            <div class="card-links"><a href="https://ropero-virtual-norel.nicolasomgb.chatgpt.site" target="_blank" rel="noreferrer">Abrir la app ↗</a><a href="https://github.com/NiorbDev/Ropero-Virtual" target="_blank" rel="noreferrer">Código ↗</a></div>
           </div>
-          <div class="helix-focal-frame" aria-hidden="true">
-            <span class="focal-bracket focal-bracket--tl"></span>
-            <span class="focal-bracket focal-bracket--tr"></span>
-            <span class="focal-bracket focal-bracket--bl"></span>
-            <span class="focal-bracket focal-bracket--br"></span>
-            <span class="focal-label">FOCO // 00°</span>
-          </div>
-
-          <div class="helix-viewport">
-            <div class="helix-rotor">
-              <article class="project-card helix-card project-feature" data-helix-card="0" data-index="01">
-                <div class="helix-face helix-face--front">
-                  <div class="helix-card-body">
-                    <div class="card-topline"><span>WEB APP · 01</span><span class="card-index">01</span></div>
-                    <p class="project-kicker">ENTRECAPAS / ROPERO DIGITAL</p>
-                    <h3>Tu ropa.<br>Otra perspectiva.</h3>
-                    <p class="project-description">Guarda prendas, arma conjuntos y juega con un probador 2D. El ropero se conserva localmente en el dispositivo.</p>
-                    <div class="tag-row"><span>React</span><span>TypeScript</span><span>IndexedDB</span></div>
-                    <div class="card-links"><a href="https://ropero-virtual-norel.nicolasomgb.chatgpt.site" target="_blank" rel="noreferrer">Abrir la app ↗</a><a href="https://github.com/NiorbDev/Ropero-Virtual" target="_blank" rel="noreferrer">Código ↗</a></div>
-                  </div>
-                  <div class="helix-card-visual">
-                    <div class="helix-plate image-slot">
-                      <img src="assets/gallery/projects/entrecapas-coleccion.webp" alt="Captura de colección en EntreCapas." decoding="async">
-                      <span class="helix-plate-stamp">LÁMINA 01 / UI</span>
-                    </div>
-                    <div class="feature-decoration" aria-hidden="true"><span>↗</span><i></i><b></b></div>
-                  </div>
-                </div>
-                <div class="helix-face helix-face--back" aria-hidden="true">
-                  <div class="helix-back-frame">
-                    <div class="helix-back-head"><span>ARCHIVO · ND—01</span><span>REVERSO DE LÁMINA</span></div>
-                    <div class="helix-back-core">
-                      <strong>01</strong>
-                      <span>ENTRECAPAS / ROPERO DIGITAL</span>
-                    </div>
-                    <div class="helix-back-foot"><span>REACT · TYPESCRIPT · INDEXEDDB</span><span>TRAER AL FRENTE ↻</span></div>
-                  </div>
-                </div>
-                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>01 · ENTRECAPAS</span></div>
-                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>01 · ENTRECAPAS</span></div>
-              </article>
-
-              <article class="project-card helix-card project-solver" data-helix-card="1" data-index="02">
-                <div class="helix-face helix-face--front">
-                  <div class="helix-card-body">
-                    <div class="card-topline"><span>ALGORITMOS · 02</span><span class="card-index">02</span></div>
-                    <p class="project-kicker">COLOR BLOCK JAM / SOLVER</p>
-                    <h3>Buscar la salida.</h3>
-                    <p class="project-description">Solver de consola en C++ que explora niveles configurables con A* y anima la secuencia encontrada.</p>
-                    <div class="tag-row"><span>C++</span><span>A*</span><span>Pathfinding</span></div>
-                    <a class="card-link" href="https://github.com/NiorbDev/ColorBlockJam_Solver" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
-                  </div>
-                  <div class="helix-card-visual">
-                    <div class="helix-plate helix-plate--contain image-slot">
-                      <img src="assets/gallery/projects/solver-ejecucion.png" alt="Tablero y resultado de Color Block Jam Solver." decoding="async">
-                      <span class="helix-plate-stamp">LÁMINA 02 / A*</span>
-                    </div>
-                    <div class="solver-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>→</b></div>
-                  </div>
-                </div>
-                <div class="helix-face helix-face--back" aria-hidden="true">
-                  <div class="helix-back-frame">
-                    <div class="helix-back-head"><span>ARCHIVO · ND—02</span><span>REVERSO DE LÁMINA</span></div>
-                    <div class="helix-back-core">
-                      <strong>02</strong>
-                      <span>COLOR BLOCK JAM / SOLVER</span>
-                    </div>
-                    <div class="helix-back-foot"><span>C++ · A* · PATHFINDING</span><span>TRAER AL FRENTE ↻</span></div>
-                  </div>
-                </div>
-                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>02 · SOLVER A*</span></div>
-                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>02 · SOLVER A*</span></div>
-              </article>
-
-              <article class="project-card helix-card project-hough" data-helix-card="2" data-index="03">
-                <div class="helix-face helix-face--front">
-                  <div class="helix-card-body">
-                    <div class="card-topline"><span>PROCESAMIENTO · 03</span><span class="card-index">03</span></div>
-                    <p class="project-kicker">IMAGEN BINARIA / HOUGH</p>
-                    <h3>Círculos<br>entre ruido.</h3>
-                    <p class="project-description">Pipeline multiproceso en C que preprocesa imágenes binarias y detecta centros con la Transformada de Hough.</p>
-                    <div class="tag-row"><span>C</span><span>POSIX</span><span>Hough</span></div>
-                    <a class="card-link" href="https://github.com/NiorbDev/deteccion-circulos-hough" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
-                  </div>
-                  <div class="helix-card-visual">
-                    <div class="helix-plate helix-plate--contain image-slot">
-                      <img src="assets/gallery/projects/hough-ejecucion.png" alt="Centros detectados con la Transformada de Hough." decoding="async">
-                      <span class="helix-plate-stamp">LÁMINA 03 / C</span>
-                    </div>
-                    <div class="hough-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
-                  </div>
-                </div>
-                <div class="helix-face helix-face--back" aria-hidden="true">
-                  <div class="helix-back-frame">
-                    <div class="helix-back-head"><span>ARCHIVO · ND—03</span><span>REVERSO DE LÁMINA</span></div>
-                    <div class="helix-back-core">
-                      <strong>03</strong>
-                      <span>IMAGEN BINARIA / HOUGH</span>
-                    </div>
-                    <div class="helix-back-foot"><span>C · POSIX · HOUGH</span><span>TRAER AL FRENTE ↻</span></div>
-                  </div>
-                </div>
-                <div class="helix-edge helix-edge--top" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--bottom" aria-hidden="true"></div>
-                <div class="helix-edge helix-edge--left" aria-hidden="true"><span>03 · HOUGH</span></div>
-                <div class="helix-edge helix-edge--right" aria-hidden="true"><span>03 · HOUGH</span></div>
-              </article>
+          <div class="project-xray" aria-hidden="true">
+            <img class="xray-photo" src="assets/gallery/projects/entrecapas-probador.webp" alt="" decoding="async" data-xray-img>
+            <div class="xray-overlay">
+              <div class="xray-meta"><span>NEGATIVO 01 // ENTRECAPAS</span><span>ALMACENAMIENTO: INDEXEDDB LOCAL</span></div>
+              <div class="xray-plates" data-xray-plates>
+                <button type="button" class="is-selected" data-plate-src="assets/gallery/projects/entrecapas-probador.webp">PROBADOR 2D</button>
+                <button type="button" data-plate-src="assets/gallery/projects/entrecapas-coleccion.webp">COLECCIÓN</button>
+                <button type="button" data-plate-src="assets/gallery/projects/entrecapas-filtros.webp">FILTROS</button>
+              </div>
+              <div class="xray-specs"><span>CAPAS 2D EN CLIENTE · SIN SERVIDOR</span><span>+</span></div>
             </div>
           </div>
-        </div>
+        </article>
 
-        <div class="section-wrap projects-hud">
-          <div class="helix-steps" role="group" aria-label="Seleccionar proyecto en la hélice">
-            <button type="button" class="helix-step is-active" data-helix-jump="0" aria-current="step"><span>01</span> EntreCapas</button>
-            <button type="button" class="helix-step" data-helix-jump="1"><span>02</span> Jam Solver</button>
-            <button type="button" class="helix-step" data-helix-jump="2"><span>03</span> Hough C</button>
+        <article class="project-card project-solver reveal">
+          <div class="project-surface">
+            <div class="card-topline"><span>ALGORITMOS · 02</span><span class="card-index">02</span></div><p class="project-kicker">COLOR BLOCK JAM / SOLVER</p><h3>Buscar la salida.</h3>
+            <p class="project-description">Solver de consola en C++ que explora niveles configurables con A* y anima la secuencia encontrada.</p>
+            <div class="tag-row"><span>C++</span><span>A*</span><span>Pathfinding</span></div>
+            <a class="card-link" href="https://github.com/NiorbDev/ColorBlockJam_Solver" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
+            <div class="solver-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>→</b></div>
           </div>
-          <div class="helix-progress" aria-hidden="true"><i class="helix-progress-fill"></i></div>
-          <p class="helix-telemetry" aria-live="polite"><span data-helix-readout>01 / 03 · +000°</span></p>
-        </div>
+          <div class="project-xray" aria-hidden="true">
+            <img class="xray-photo xray-photo--contain" src="assets/gallery/projects/solver-ejecucion.png" alt="" decoding="async" data-xray-img>
+            <div class="xray-overlay">
+              <div class="xray-meta"><span>NEGATIVO 02 // A*</span><span>EJEMPLOS/FACIL1.TXT</span></div>
+              <div class="xray-specs"><span>BÚSQUEDA HEURÍSTICA + ANIMACIÓN CLI</span><span>+</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card project-hough reveal">
+          <div class="project-surface">
+            <div class="card-topline"><span>PROCESAMIENTO · 03</span><span class="card-index">03</span></div><p class="project-kicker">IMAGEN BINARIA / HOUGH</p><h3>Círculos<br>entre ruido.</h3>
+            <p class="project-description">Pipeline multiproceso en C que preprocesa imágenes binarias y detecta centros con la Transformada de Hough.</p>
+            <div class="tag-row"><span>C</span><span>POSIX</span><span>Hough</span></div>
+            <a class="card-link" href="https://github.com/NiorbDev/deteccion-circulos-hough" target="_blank" rel="noreferrer">Ver repositorio ↗</a>
+            <div class="hough-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+          </div>
+          <div class="project-xray" aria-hidden="true">
+            <img class="xray-photo xray-photo--contain" src="assets/gallery/projects/hough-ejecucion.png" alt="" decoding="async" data-xray-img>
+            <div class="xray-overlay">
+              <div class="xray-meta"><span>NEGATIVO 03 // HOUGH</span><span>R=60 · UMBRAL 250 · CSV</span></div>
+              <div class="xray-specs"><span>10 CENTROS SOBRE IMAGEN_RUIDO.BIN</span><span>+</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="project-grid" data-project-sheet="1" data-sheet-note="Archivo adicional: prototipos de feria y utilidades móviles." hidden>
+        <article class="project-card project-feature">
+          <div class="project-surface">
+            <div class="card-topline"><span>PROTOTIPO · 04</span><span class="card-index">04</span></div><div class="feature-decoration" aria-hidden="true"><span>★</span><i></i><b></b></div>
+            <p class="project-kicker">FITAMÓN / FERIA USACH</p><h3>Prototipo<br>premiado.</h3>
+            <p class="project-description">Presentado en la Feria de Prototipos de la USACH junto al equipo, donde obtuvo el premio Voto Popular.</p>
+            <div class="tag-row"><span>Prototipo</span><span>USACH</span><span>Voto Popular</span></div>
+            <div class="card-links"><a href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Ver archivo GitHub ↗</a></div>
+          </div>
+          <div class="project-xray" aria-hidden="true">
+            <img class="xray-photo" src="assets/gallery/projects/fitamon-feria.webp" alt="" decoding="async" data-xray-img>
+            <div class="xray-overlay">
+              <div class="xray-meta"><span>NEGATIVO 04 // FITAMÓN</span><span>FERIA DE PROTOTIPOS</span></div>
+              <div class="xray-plates" data-xray-plates>
+                <button type="button" class="is-selected" data-plate-src="assets/gallery/projects/fitamon-feria.webp">FERIA</button>
+                <button type="button" data-plate-src="assets/gallery/projects/fitamon-voto-popular.webp">PREMIO</button>
+                <button type="button" data-plate-src="assets/gallery/projects/fitamon-equipo.webp">EQUIPO</button>
+              </div>
+              <div class="xray-specs"><span>PREMIO VOTO POPULAR · REGISTRO REAL</span><span>+</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card project-solver project-wide-side">
+          <div class="project-surface">
+            <div class="card-topline"><span>ANDROID · 05</span><span class="card-index">05</span></div><p class="project-kicker">WIDGET DIARIO / MÓVIL</p><h3>Pendientes<br>en portada.</h3>
+            <p class="project-description">Widget para pantalla de inicio en Android con vista directa de pendientes y cabecera diaria compacta.</p>
+            <div class="tag-row"><span>Android</span><span>Widget</span><span>Pendientes</span></div>
+            <a class="card-link" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Explorar perfil ↗</a>
+            <div class="solver-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>→</b></div>
+          </div>
+          <div class="project-xray" aria-hidden="true">
+            <img class="xray-photo xray-photo--contain" src="assets/gallery/projects/widget-diario-pendientes.webp" alt="" decoding="async" data-xray-img>
+            <div class="xray-overlay">
+              <div class="xray-meta"><span>NEGATIVO 05 // WIDGET DIARIO</span><span>PANTALLA DE INICIO</span></div>
+              <div class="xray-plates" data-xray-plates>
+                <button type="button" class="is-selected" data-plate-src="assets/gallery/projects/widget-diario-pendientes.webp">PENDIENTES</button>
+                <button type="button" data-plate-src="assets/gallery/projects/widget-diario-panel-inicio.webp">CABECERA</button>
+              </div>
+              <div class="xray-specs"><span>LISTA EN PANTALLA DE INICIO ANDROID</span><span>+</span></div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -280,6 +260,7 @@
   </section>
   <section class="closing section-wrap reveal"><p class="eyebrow">03 / SIGUE EL RASTRO</p><h2>Más código.<br><span>Menos ruido.</span></h2><a class="closing-link" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Explorar GitHub ↗</a><div class="closing-stamp" aria-hidden="true">ND<br>2026</div></section>
 </main>
+<button type="button" class="darkroom-pill" data-darkroom-toggle aria-pressed="false" hidden><i class="signal-dot" aria-hidden="true"></i> CUARTO OSCURO · SALIR</button>
 <footer class="site-footer"><a class="footer-mark" href="#inicio">N<span>/</span></a><span>NIORBDEV · PORTAFOLIO PERSONAL</span><a href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GITHUB ↗</a><span>© <span data-year>2026</span></span></footer>
 </body>
 </html>

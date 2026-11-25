@@ -312,152 +312,128 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
 
-const helixTrack = document.querySelector(".projects-helix-track");
-const helixSticky = document.querySelector(".projects-sticky");
-const helixStage = document.querySelector(".helix-stage");
-const helixRotor = document.querySelector(".helix-rotor");
-const helixCards = Array.from(document.querySelectorAll("[data-helix-card]"));
-const helixStepButtons = Array.from(document.querySelectorAll("[data-helix-jump]"));
-const helixProgressFill = document.querySelector(".helix-progress-fill");
-const helixReadout = document.querySelector("[data-helix-readout]");
-const siteHeader = document.querySelector(".site-header");
+const projectsSection = document.querySelector("#proyectos");
+const projectsPress = document.querySelector(".projects-press");
+const projectSheets = Array.from(document.querySelectorAll("[data-project-sheet]"));
+const prevSheetBtn = document.querySelector("[data-sheet-prev]");
+const nextSheetBtn = document.querySelector("[data-sheet-next]");
+const sheetStatus = document.querySelector("[data-sheet-status]");
+const sheetAside = projectsSection?.querySelector(".section-aside");
+const darkroomToggles = Array.from(document.querySelectorAll("[data-darkroom-toggle]"));
+const darkroomPill = document.querySelector(".darkroom-pill");
+const projectCards = Array.from(document.querySelectorAll(".projects .project-card"));
 
-if (helixTrack && helixSticky && helixStage && helixRotor && helixCards.length) {
-  const stepAngleDeg = 115;
-  const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
-  let cardWidth = 640;
-  let stageHeight = 520;
-  let headerHeight = 76;
-  let helixFrame = 0;
+if (projectsSection && projectsPress && projectSheets.length) {
+  let activeSheet = 0;
+  let pressTimer = 0;
+  let initialPassPlayed = false;
 
-  const measureHelix = () => {
-    headerHeight = siteHeader ? Math.round(siteHeader.getBoundingClientRect().height) : 76;
-    document.documentElement.style.setProperty("--sticky-top", `${headerHeight}px`);
-    helixTrack.style.setProperty("--helix-scroll-span", `${Math.max(1, helixCards.length - 1) * 95}svh`);
-
+  const triggerPressPass = () => {
     if (reducedMotion.matches) return;
-    cardWidth = helixRotor.offsetWidth || 640;
-    stageHeight = helixStage.offsetHeight || 520;
-    const perspective = Math.max(960, Math.round(cardWidth * 2.05));
-    helixStage.style.setProperty("--helix-perspective", `${perspective}px`);
+    window.clearTimeout(pressTimer);
+    projectsPress.classList.remove("is-printing");
+    void projectsPress.offsetWidth;
+    projectsPress.classList.add("is-printing");
+    pressTimer = window.setTimeout(() => {
+      projectsPress.classList.remove("is-printing");
+    }, 1050);
   };
 
-  const renderHelix = () => {
-    helixFrame = 0;
-
-    if (reducedMotion.matches) {
-      helixCards.forEach((card) => {
-        card.style.removeProperty("transform");
-        card.style.removeProperty("--depth-shade");
-        delete card.dataset.facing;
-        delete card.dataset.active;
-      });
-      return;
+  const renderSheet = (nextIndex, animatePass) => {
+    activeSheet = Math.max(0, Math.min(projectSheets.length - 1, nextIndex));
+    projectSheets.forEach((sheet, index) => {
+      const isCurrent = index === activeSheet;
+      sheet.hidden = !isCurrent;
+      sheet.classList.toggle("is-active-sheet", isCurrent);
+    });
+    const currentSheet = projectSheets[activeSheet];
+    if (sheetAside && currentSheet.dataset.sheetNote) {
+      sheetAside.textContent = currentSheet.dataset.sheetNote;
     }
-
-    const trackRect = helixTrack.getBoundingClientRect();
-    const travel = Math.max(1, helixTrack.offsetHeight - helixSticky.offsetHeight);
-    const scrolled = headerHeight - trackRect.top;
-    const progress = Math.min(1, Math.max(0, scrolled / travel));
-    const count = helixCards.length;
-    const activeFloat = progress * (count - 1);
-
-    const radius = Math.max(195, cardWidth * 0.58);
-    const stepY = Math.min(135, Math.max(76, stageHeight * 0.21));
-    const pitch = stepY / stepAngleRad;
-
-    helixCards.forEach((card, index) => {
-      const theta = (index - activeFloat) * stepAngleRad;
-      const sinTheta = Math.sin(theta);
-      const cosTheta = Math.cos(theta);
-      const x = radius * sinTheta;
-      // Offset by -radius so the protagonist card at theta = 0 sits at z = 0 for 1:1 crisp rendering.
-      const z = radius * cosTheta - radius;
-      const y = theta * pitch;
-      const rotDeg = (theta * 180) / Math.PI;
-      const absDeg = Math.abs(rotDeg);
-      const depthShade = Math.min(0.46, Math.max(0, (1 - cosTheta) * 0.23));
-
-      card.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateY(${rotDeg.toFixed(2)}deg)`;
-      card.style.setProperty("--depth-shade", depthShade.toFixed(3));
-      card.dataset.facing = absDeg < 76 ? "front" : absDeg <= 104 ? "edge" : "back";
-      card.dataset.active = absDeg < 28 ? "true" : "false";
-    });
-
-    const nearestIndex = Math.round(activeFloat);
-    helixStepButtons.forEach((button, index) => {
-      const isCurrent = index === nearestIndex;
-      button.classList.toggle("is-active", isCurrent);
-      if (isCurrent) button.setAttribute("aria-current", "step");
-      else button.removeAttribute("aria-current");
-    });
-
-    if (helixProgressFill) {
-      helixProgressFill.style.transform = `scaleX(${progress.toFixed(4)})`;
+    if (sheetStatus) {
+      const cur = String(activeSheet + 1).padStart(2, "0");
+      const tot = String(projectSheets.length).padStart(2, "0");
+      sheetStatus.textContent = `PLIEGO ${cur} / ${tot}`;
     }
-    if (helixReadout) {
-      const idxText = String(nearestIndex + 1).padStart(2, "0");
-      const totalText = String(count).padStart(2, "0");
-      const helixDeg = String(Math.round(activeFloat * stepAngleDeg)).padStart(3, "0");
-      helixReadout.textContent = `${idxText} / ${totalText} · ${helixDeg}°`;
-    }
+    if (prevSheetBtn) prevSheetBtn.disabled = activeSheet === 0;
+    if (nextSheetBtn) nextSheetBtn.disabled = activeSheet === projectSheets.length - 1;
+    if (animatePass) triggerPressPass();
   };
 
-  const queueHelix = () => {
-    if (!helixFrame) helixFrame = requestAnimationFrame(renderHelix);
-  };
+  prevSheetBtn?.addEventListener("click", () => renderSheet(activeSheet - 1, true));
+  nextSheetBtn?.addEventListener("click", () => renderSheet(activeSheet + 1, true));
+  renderSheet(0, false);
 
-  const scrollToHelixIndex = (index) => {
-    const count = helixCards.length;
-    const targetProgress = count > 1 ? index / (count - 1) : 0;
-    const trackTop = helixTrack.getBoundingClientRect().top + window.scrollY;
-    const travel = Math.max(1, helixTrack.offsetHeight - helixSticky.offsetHeight);
-    const targetY = trackTop - headerHeight + targetProgress * travel;
-    window.scrollTo({
-      top: Math.round(targetY),
-      behavior: reducedMotion.matches ? "auto" : "smooth",
-    });
-  };
-
-  helixStepButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const targetIndex = Number(button.dataset.helixJump);
-      if (!Number.isNaN(targetIndex)) scrollToHelixIndex(targetIndex);
-    });
-  });
-
-  helixCards.forEach((card, index) => {
-    card.addEventListener("click", (event) => {
-      if (reducedMotion.matches || card.dataset.active === "true") return;
-      if (event.target.closest("a")) event.preventDefault();
-      scrollToHelixIndex(index);
-    });
-    card.addEventListener("focusin", () => {
-      if (reducedMotion.matches || card.dataset.active === "true") return;
-      scrollToHelixIndex(index);
-    });
-  });
-
-  window.addEventListener("scroll", queueHelix, { passive: true });
-  window.addEventListener("resize", () => {
-    measureHelix();
-    queueHelix();
-  }, { passive: true });
-
-  if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(() => {
-      measureHelix();
-      queueHelix();
-    });
-    if (siteHeader) ro.observe(siteHeader);
-    ro.observe(helixStage);
+  if ("IntersectionObserver" in window) {
+    const pressObserver = new IntersectionObserver((entries, activeObserver) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        if (!initialPassPlayed) {
+          initialPassPlayed = true;
+          triggerPressPass();
+        }
+        activeObserver.disconnect();
+      }
+    }, { threshold: 0.16 });
+    pressObserver.observe(projectsPress);
   }
 
-  reducedMotion.addEventListener("change", () => {
-    measureHelix();
-    queueHelix();
+  const setDarkroom = (enabled) => {
+    document.documentElement.classList.toggle("is-darkroom", enabled);
+    darkroomToggles.forEach((button) => {
+      button.setAttribute("aria-pressed", enabled ? "true" : "false");
+    });
+    if (darkroomPill) darkroomPill.hidden = !enabled;
+    if (!enabled) {
+      projectCards.forEach((card) => card.classList.remove("is-probing"));
+    }
+  };
+
+  darkroomToggles.forEach((button) => {
+    button.addEventListener("click", () => {
+      setDarkroom(!document.documentElement.classList.contains("is-darkroom"));
+    });
   });
 
-  measureHelix();
-  renderHelix();
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.documentElement.classList.contains("is-darkroom")) {
+      setDarkroom(false);
+    }
+  });
+
+  projectCards.forEach((card) => {
+    const updateProbe = (clientX, clientY) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--xray-x", `${Math.round(clientX - rect.left)}px`);
+      card.style.setProperty("--xray-y", `${Math.round(clientY - rect.top)}px`);
+    };
+
+    card.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse" || !document.documentElement.classList.contains("is-darkroom")) return;
+      updateProbe(event.clientX, event.clientY);
+      card.classList.add("is-probing");
+    }, { passive: true });
+
+    card.addEventListener("pointerleave", () => {
+      card.classList.remove("is-probing");
+    });
+
+    card.addEventListener("click", (event) => {
+      if (!document.documentElement.classList.contains("is-darkroom")) return;
+      if (event.target.closest("a, button")) return;
+      updateProbe(event.clientX, event.clientY);
+      card.classList.toggle("is-probing");
+    });
+
+    const plateButtons = Array.from(card.querySelectorAll("[data-plate-src]"));
+    const xrayImg = card.querySelector("[data-xray-img]");
+    if (xrayImg && plateButtons.length) {
+      plateButtons.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          xrayImg.src = btn.dataset.plateSrc;
+          plateButtons.forEach((other) => other.classList.toggle("is-selected", other === btn));
+        });
+      });
+    }
+  });
 }
