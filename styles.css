@@ -301,24 +301,39 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .card-links a:hover,.card-link:hover{color:var(--ivory)}
 .project-hough .card-link:hover{color:var(--amber)}
 
-.project-xray{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;background:var(--noir);opacity:0;transition:opacity .25s ease}
-.project-card:is(:hover,:focus-within) .project-xray,
-html.is-darkroom .project-xray{opacity:1}
-.project-card:is(:hover,:focus-within) .project-surface,
+.project-xray{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  overflow:hidden;
+  pointer-events:none;
+  background:var(--noir);
+  opacity:0;
+  mask-image:radial-gradient(circle 52px at var(--preview-x,50%) var(--preview-y,50%),#000 22%,transparent 100%);
+  transition:opacity .18s ease;
+}
+.project-card.is-previewing .project-xray{opacity:1}
+html.is-darkroom .project-card .project-xray{z-index:2;opacity:1;mask-image:none;transition:none}
 html.is-darkroom .project-surface{pointer-events:none}
-.project-card:is(:hover,:focus-within) .project-surface > :not(.card-links,.card-link),
 html.is-darkroom .project-surface > :not(.card-links,.card-link){opacity:0}
-.project-card:is(:hover,:focus-within) .project-surface :is(.card-links a,.card-link),
 html.is-darkroom .project-surface :is(.card-links a,.card-link){
   pointer-events:auto;
   padding:.5rem .65rem;
   background:var(--noir);
   color:var(--ivory);
 }
-.project-card:is(:hover,:focus-within) .project-surface :is(.card-links a,.card-link):hover,
 html.is-darkroom .project-surface :is(.card-links a,.card-link):hover{color:var(--amber)}
 .xray-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .xray-photo--contain{object-fit:contain;padding:2.6rem 1.4rem}
+.xray-photo--wardrobe{
+  inset:50% auto auto 50%;
+  width:auto;
+  height:calc(100% - 7rem);
+  max-width:calc(100% - 2rem);
+  object-fit:contain;
+  transform:translate(-50%,-50%);
+  clip-path:inset(4.84% 0 5%);
+}
 .xray-overlay{
   position:relative;
   width:100%;
@@ -328,7 +343,6 @@ html.is-darkroom .project-surface :is(.card-links a,.card-link):hover{color:var(
   flex-direction:column;
   justify-content:space-between;
 }
-html.is-darkroom .project-xray{transition:none}
 html.is-darkroom .xray-overlay{display:flex}
 .xray-meta,.xray-specs{
   display:flex;

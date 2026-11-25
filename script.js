@@ -398,6 +398,15 @@ if (projectsSection && projectsPress && projectSheets.length) {
   });
 
   projectCards.forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty("--preview-x", `${event.clientX - bounds.left - card.clientLeft}px`);
+      card.style.setProperty("--preview-y", `${event.clientY - bounds.top - card.clientTop}px`);
+      card.classList.add("is-previewing");
+    }, { passive: true });
+    card.addEventListener("pointerleave", () => card.classList.remove("is-previewing"));
+
     const plateButtons = Array.from(card.querySelectorAll("[data-plate-src]"));
     const xrayImg = card.querySelector("[data-xray-img]");
     if (xrayImg && plateButtons.length) {
