@@ -25,6 +25,7 @@
   let layoutChanged = true;
   let timer;
   let scrollFrame = 0;
+  let snakePaintBounds;
   const trails = [];
   const fadeDuration = 1000;
   let activeTrail;
@@ -158,7 +159,23 @@
   function draw() {
     const scrollTop = window.scrollY;
     const headerBottom = Math.max(0, header?.getBoundingClientRect().bottom ?? 0);
-    context.clearRect(0, 0, viewportWidth, viewportHeight);
+    if (snakePaintBounds) {
+      const [left, top, right, bottom] = snakePaintBounds;
+      context.clearRect(left, top, right - left, bottom - top);
+    }
+    let left = viewportWidth;
+    let top = viewportHeight;
+    let right = 0;
+    let bottom = 0;
+    const includeCell = (x, y) => {
+      const screenY = y - scrollTop;
+      if (screenY >= viewportHeight || screenY + cellSize <= headerBottom) return false;
+      left = Math.min(left, x);
+      top = Math.min(top, Math.floor(screenY));
+      right = Math.max(right, x + cellSize);
+      bottom = Math.max(bottom, Math.ceil(screenY + cellSize));
+      return true;
+    };
     context.save();
     context.beginPath();
     context.rect(0, headerBottom, viewportWidth, Math.max(0, viewportHeight - headerBottom));
@@ -169,6 +186,7 @@
         const cell = body[i];
         const x = cell % columns * cellSize;
         const y = Math.floor(cell / columns) * cellSize;
+        if (!includeCell(x, y)) continue;
         context.globalAlpha = i === 0 ? 0.84 : 0.54 - i / maxLength * 0.23;
         context.fillStyle = amber;
         context.fillRect(x + 1, y + 1, 8, 8);
@@ -178,10 +196,11 @@
           context.fillRect(x + 4, y + 4, 2, 2);
         }
       }
-      if (food !== undefined) drawFood(food, false);
-      for (const cell of queuedFood) drawFood(cell, true);
+      if (food !== undefined) drawFood(food, false, includeCell);
+      for (const cell of queuedFood) drawFood(cell, true, includeCell);
     }
     context.restore();
+    snakePaintBounds = right > left ? [left, top, right, bottom] : undefined;
   }
 
   function drawTrails(now) {
@@ -224,9 +243,10 @@
     }
   }
 
-  function drawFood(cell, requested) {
+  function drawFood(cell, requested, includeCell) {
     const x = cell % columns * cellSize;
     const y = Math.floor(cell / columns) * cellSize;
+    if (!includeCell(x, y)) return;
     context.globalAlpha = requested ? 0.95 : 0.68;
     context.fillStyle = requested ? ivory : amber;
     context.fillRect(x + 3, y + 3, 4, 4);
@@ -274,7 +294,13 @@
   function tick() {
     if (document.hidden) return;
     if (layoutChanged) readPanels();
-    snakes.forEach(moveSnake);
+    const viewTop = window.scrollY;
+    const viewBottom = viewTop + viewportHeight;
+    for (const snake of snakes) {
+      if (snake.queuedFood.size || (snake.endRow * cellSize > viewTop && snake.startRow * cellSize < viewBottom)) {
+        moveSnake(snake);
+      }
+    }
     draw();
   }
 
@@ -284,6 +310,7 @@
     const scale = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(viewportWidth * scale);
     canvas.height = Math.round(viewportHeight * scale);
+    snakePaintBounds = undefined;
     context.setTransform(scale, 0, 0, scale, 0, 0);
     inkCanvas.width = canvas.width;
     inkCanvas.height = canvas.height;
@@ -335,7 +362,7 @@
     if (distance < (activeTrail.length ? 2 : 5)) return;
     activeTrail.length += distance;
     activeTrail.points.push({...point, distance: activeTrail.length});
-    drawTrails(performance.now());
+    if (!trailFrame) trailFrame = requestAnimationFrame(animateTrails);
   }
 
   window.addEventListener("pointermove", event => {

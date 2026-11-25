@@ -111,7 +111,7 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .eyebrow{display:flex;align-items:center;gap:.65rem;color:var(--dim)}
 .signal-dot{width:8px;height:8px;flex:none;background:var(--amber);animation:signal 2.2s steps(2,end) infinite}
 .hero{padding-block:clamp(1.5rem,4vw,3.5rem);display:grid;grid-template-columns:minmax(0,1.48fr) minmax(300px,1fr);align-items:stretch;gap:clamp(.8rem,1.8vw,1.5rem)}
-.hero-photo-panel{height:var(--hero-height);min-height:0;position:relative;overflow:hidden;isolation:isolate;container-type:inline-size;background:var(--noir) url('assets/niorb-portrait-extension.png') right center / cover no-repeat;border:1px solid rgba(247,246,242,.42)}
+.hero-photo-panel{height:var(--hero-height);min-height:0;position:relative;overflow:hidden;isolation:isolate;container-type:inline-size;background:var(--noir) url('assets/niorb-portrait-extension.webp') right center / cover no-repeat;border:1px solid rgba(247,246,242,.42)}
 .hero-photo-panel:before{content:"";position:absolute;z-index:1;inset:1rem;border:1px solid rgba(247,246,242,.26);pointer-events:none}
 .hero-photo-panel:after{content:"";position:absolute;z-index:1;inset:0 auto 0 0;width:42%;pointer-events:none;background-image:radial-gradient(circle,rgba(247,246,242,.55) .55px,transparent .9px);background-size:5px 5px;opacity:.10}
 .hero-copy{position:absolute;z-index:2;left:clamp(1.2rem,3.5vw,3.5rem);top:50%;width:min(calc(100% - 3rem),33rem);transform:translateY(-47%)}
@@ -311,7 +311,7 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
   pointer-events:none;
   background:var(--noir);
   opacity:0;
-  mask-image:radial-gradient(circle var(--lens-radius) at var(--preview-x,50%) var(--preview-y,50%),#000 96%,transparent 100%);
+  clip-path:circle(var(--lens-radius) at var(--preview-x,50%) var(--preview-y,50%));
   transition:opacity .18s ease;
 }
 html:not(.is-darkroom) .project-card.is-previewing{cursor:none}
@@ -341,7 +341,7 @@ html:not(.is-darkroom) .project-card.is-previewing::after{
   transform-origin:left center;
   transform:translate(calc(var(--lens-radius) * .707),calc(var(--lens-radius) * .707 - 3px)) rotate(45deg);
 }
-html.is-darkroom .project-card .project-xray{z-index:2;opacity:1;mask-image:none;transition:none}
+html.is-darkroom .project-card .project-xray{z-index:2;opacity:1;clip-path:none;transition:none}
 html.is-darkroom .project-surface{pointer-events:none}
 html.is-darkroom .project-surface > :not(.card-links,.card-link){opacity:0}
 html.is-darkroom .project-surface :is(.card-links a,.card-link){
@@ -567,6 +567,10 @@ html.is-darkroom .darkroom-pill:not([hidden]){display:inline-flex}
   .site-header .nav-github{padding:.58rem .35rem}
 }
 html:not(.has-js) .projects-toolbar{display:none}
+.motion-offscreen :is(.mosaic-track,.ticker-track,.signal-dot,.feature-decoration span,.solver-mark span,.hough-mark i,.closing-stamp){
+  animation-play-state:paused;
+}
+
 @media(prefers-reduced-motion:reduce){
   .background-dots,.background-snake{display:none}
   html{scroll-behavior:auto}

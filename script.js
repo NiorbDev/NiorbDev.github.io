@@ -121,23 +121,40 @@ if (dotContext) {
     const left = Math.round((cursorX - size / 2) / spacing) * spacing;
     const top = Math.round((cursorY - size / 2) / spacing) * spacing;
     dotCanvas.style.transform = `translate3d(${left}px,${top}px,0)`;
+    dotContext.globalAlpha = 1;
     dotContext.fillStyle = backgroundColor;
     dotContext.fillRect(0, 0, size, size);
+    const paths = Array.from({length:33}, () => new Path2D());
+    const cursorInCanvasX = cursorX - left;
+    const cursorInCanvasY = cursorY - top;
     for (let y = spacing / 2; y < size; y += spacing) {
       for (let x = spacing / 2; x < size; x += spacing) {
-        const dx = left + x - cursorX;
-        const dy = top + y - cursorY;
-        const distance = Math.hypot(dx, dy);
-        const influence = Math.max(0, 1 - distance / radius);
-        const shift = 8 * influence ** 2 * strength;
-        const direction = distance || 1;
-        const opacity = 0.07 + 0.28 * influence * strength;
-        dotContext.fillStyle = `rgba(247,246,242,${opacity})`;
-        dotContext.beginPath();
-        dotContext.arc(x + dx / direction * shift, y + dy / direction * shift, 0.65 + influence * strength * 0.22, 0, 2 * Math.PI);
-        dotContext.fill();
+        const dx = x - cursorInCanvasX;
+        const dy = y - cursorInCanvasY;
+        const squaredDistance = dx * dx + dy * dy;
+        let dotX = x;
+        let dotY = y;
+        let influence = 0;
+        if (squaredDistance < radius * radius) {
+          const distance = Math.sqrt(squaredDistance);
+          const proximity = 1 - distance / radius;
+          const shift = 8 * proximity * proximity * strength / (distance || 1);
+          dotX += dx * shift;
+          dotY += dy * shift;
+          influence = proximity * strength;
+        }
+        const dotRadius = 0.65 + influence * 0.22;
+        // Draw dots of similar opacity together instead of submitting each one separately.
+        const path = paths[Math.round(influence * 32)];
+        path.moveTo(dotX + dotRadius, dotY);
+        path.arc(dotX, dotY, dotRadius, 0, 2 * Math.PI);
       }
     }
+    dotContext.fillStyle = "#f7f6f2";
+    paths.forEach((path, index) => {
+      dotContext.globalAlpha = 0.07 + 0.28 * index / 32;
+      dotContext.fill(path);
+    });
 
     if (strength !== target) frame = requestAnimationFrame(drawDots);
   };
@@ -299,6 +316,16 @@ if (mosaicTrack) {
   }
 }
 
+if ("IntersectionObserver" in window) {
+  const motionObserver = new IntersectionObserver(entries => {
+    for (const {target, isIntersecting} of entries) {
+      target.classList.toggle("motion-offscreen", !isIntersecting);
+    }
+  });
+  document.querySelectorAll(".hero, .ticker, .project-card, .closing")
+    .forEach(element => motionObserver.observe(element));
+}
+
 const revealItems = document.querySelectorAll(".reveal");
 if ("IntersectionObserver" in window) {
   const observer = new IntersectionObserver((entries, activeObserver) => {
@@ -401,18 +428,32 @@ if (projectsSection && projectsPress && projectSheets.length) {
   });
 
   projectCards.forEach((card) => {
+    let previewFrame = 0;
+    let previewX, previewY;
+    const stopPreview = () => {
+      cancelAnimationFrame(previewFrame);
+      previewFrame = 0;
+      card.classList.remove("is-previewing");
+    };
     card.addEventListener("pointermove", (event) => {
       if (event.pointerType !== "mouse") return;
       if (event.target.closest("a, button") || document.documentElement.classList.contains("is-darkroom")) {
-        card.classList.remove("is-previewing");
+        stopPreview();
         return;
       }
-      const bounds = card.getBoundingClientRect();
-      card.style.setProperty("--preview-x", `${event.clientX - bounds.left - card.clientLeft}px`);
-      card.style.setProperty("--preview-y", `${event.clientY - bounds.top - card.clientTop}px`);
-      card.classList.add("is-previewing");
+      previewX = event.clientX;
+      previewY = event.clientY;
+      if (previewFrame) return;
+      previewFrame = requestAnimationFrame(() => {
+        previewFrame = 0;
+        if (document.documentElement.classList.contains("is-darkroom")) return;
+        const bounds = card.getBoundingClientRect();
+        card.style.setProperty("--preview-x", `${previewX - bounds.left - card.clientLeft}px`);
+        card.style.setProperty("--preview-y", `${previewY - bounds.top - card.clientTop}px`);
+        card.classList.add("is-previewing");
+      });
     }, { passive: true });
-    card.addEventListener("pointerleave", () => card.classList.remove("is-previewing"));
+    card.addEventListener("pointerleave", stopPreview);
 
     const plateButtons = Array.from(card.querySelectorAll("[data-plate-src]"));
     const xrayImg = card.querySelector("[data-xray-img]");
