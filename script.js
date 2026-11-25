@@ -383,9 +383,6 @@ if (projectsSection && projectsPress && projectSheets.length) {
       button.setAttribute("aria-pressed", enabled ? "true" : "false");
     });
     if (darkroomPill) darkroomPill.hidden = !enabled;
-    if (!enabled) {
-      projectCards.forEach((card) => card.classList.remove("is-probing"));
-    }
   };
 
   darkroomToggles.forEach((button) => {
@@ -401,29 +398,6 @@ if (projectsSection && projectsPress && projectSheets.length) {
   });
 
   projectCards.forEach((card) => {
-    const updateProbe = (clientX, clientY) => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--xray-x", `${Math.round(clientX - rect.left)}px`);
-      card.style.setProperty("--xray-y", `${Math.round(clientY - rect.top)}px`);
-    };
-
-    card.addEventListener("pointermove", (event) => {
-      if (event.pointerType !== "mouse" || !document.documentElement.classList.contains("is-darkroom")) return;
-      updateProbe(event.clientX, event.clientY);
-      card.classList.add("is-probing");
-    }, { passive: true });
-
-    card.addEventListener("pointerleave", () => {
-      card.classList.remove("is-probing");
-    });
-
-    card.addEventListener("click", (event) => {
-      if (!document.documentElement.classList.contains("is-darkroom")) return;
-      if (event.target.closest("a, button")) return;
-      updateProbe(event.clientX, event.clientY);
-      card.classList.toggle("is-probing");
-    });
-
     const plateButtons = Array.from(card.querySelectorAll("[data-plate-src]"));
     const xrayImg = card.querySelector("[data-xray-img]");
     if (xrayImg && plateButtons.length) {

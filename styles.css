@@ -301,30 +301,35 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .card-links a:hover,.card-link:hover{color:var(--ivory)}
 .project-hough .card-link:hover{color:var(--amber)}
 
-.project-xray{display:none;position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;background:rgba(16,17,20,.55)}
-.xray-photo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:url("#project-print-palette") contrast(1.06);
-  opacity:.44;
-  transition:opacity .25s ease;
+.project-xray{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;background:var(--noir);opacity:0;transition:opacity .25s ease}
+.project-card:is(:hover,:focus-within) .project-xray,
+html.is-darkroom .project-xray{opacity:1}
+.project-card:is(:hover,:focus-within) .project-surface,
+html.is-darkroom .project-surface{pointer-events:none}
+.project-card:is(:hover,:focus-within) .project-surface > :not(.card-links,.card-link),
+html.is-darkroom .project-surface > :not(.card-links,.card-link){opacity:0}
+.project-card:is(:hover,:focus-within) .project-surface :is(.card-links a,.card-link),
+html.is-darkroom .project-surface :is(.card-links a,.card-link){
+  pointer-events:auto;
+  padding:.5rem .65rem;
+  background:var(--noir);
+  color:var(--ivory);
 }
+.project-card:is(:hover,:focus-within) .project-surface :is(.card-links a,.card-link):hover,
+html.is-darkroom .project-surface :is(.card-links a,.card-link):hover{color:var(--amber)}
+.xray-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .xray-photo--contain{object-fit:contain;padding:2.6rem 1.4rem}
 .xray-overlay{
   position:relative;
-  z-index:2;
   width:100%;
   height:100%;
   padding:clamp(.9rem,2vw,1.35rem);
-  display:flex;
+  display:none;
   flex-direction:column;
   justify-content:space-between;
-  background-image:radial-gradient(circle,rgba(209,134,31,.24) .6px,transparent .9px);
-  background-size:6px 6px;
 }
+html.is-darkroom .project-xray{transition:none}
+html.is-darkroom .xray-overlay{display:flex}
 .xray-meta,.xray-specs{
   display:flex;
   justify-content:space-between;
@@ -379,29 +384,6 @@ html.is-darkroom .project-card{
   border:1px solid rgba(209,134,31,.55);
   box-shadow:inset 0 0 0 1px rgba(209,134,31,.16);
 }
-html.is-darkroom .project-surface{opacity:.24}
-html.is-darkroom .project-card:hover .project-surface,
-html.is-darkroom .project-card.is-probing .project-surface{opacity:.14}
-html.is-darkroom .project-surface .card-links,
-html.is-darkroom .project-surface .card-link{position:relative;z-index:5;opacity:1}
-html.is-darkroom .project-xray{display:block}
-html.is-darkroom .project-card.is-probing .project-xray::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  pointer-events:none;
-  background:radial-gradient(circle 165px at var(--xray-x,50%) var(--xray-y,50%),rgba(209,134,31,.11),rgba(9,10,12,.68) 74%);
-}
-html.is-darkroom .project-card.is-probing .xray-photo{
-  opacity:.84;
-  -webkit-mask-image:radial-gradient(circle 185px at var(--xray-x,50%) var(--xray-y,50%),#000 58%,rgba(0,0,0,.32) 100%);
-  mask-image:radial-gradient(circle 185px at var(--xray-x,50%) var(--xray-y,50%),#000 58%,rgba(0,0,0,.32) 100%);
-}
-html.is-darkroom .feature-decoration,
-html.is-darkroom .solver-mark,
-html.is-darkroom .hough-mark{opacity:.22}
-
 .darkroom-pill{
   position:fixed;
   right:1.25rem;
