@@ -240,16 +240,16 @@ const watchImage = (image) => {
 };
 document.querySelectorAll(".image-slot img").forEach(watchImage);
 
-const tickerTrack = document.querySelector(".ticker-track");
-if (tickerTrack) {
-  const setupTicker = () => {
+const tickerTracks = document.querySelectorAll(".ticker-track");
+if (tickerTracks.length) {
+  const setupTicker = (tickerTrack) => {
     tickerTrack.classList.remove("is-running");
     Array.from(tickerTrack.querySelectorAll("[data-loop-clone]")).forEach((node) => node.remove());
     const source = tickerTrack.firstElementChild;
     if (!source) return;
-    const groupWidth = source.getBoundingClientRect().width;
+    const groupWidth = parseFloat(getComputedStyle(source).width);
     if (!groupWidth) return;
-    const viewportWidth = document.documentElement.clientWidth;
+    const viewportWidth = tickerTrack.parentElement.clientWidth;
     const copies = Math.max(2, Math.ceil(viewportWidth / groupWidth) + 1);
     for (let index = 1; index < copies; index += 1) {
       const clone = source.cloneNode(true);
@@ -262,12 +262,14 @@ if (tickerTrack) {
     if (!reducedMotion.matches) tickerTrack.classList.add("is-running");
   };
 
+  const setupTickers = () => tickerTracks.forEach(setupTicker);
   const beginTicker = () => {
-    setupTicker();
+    setupTickers();
+    reducedMotion.addEventListener("change", setupTickers);
     let resizeTimer;
     window.addEventListener("resize", () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(setupTicker, 140);
+      resizeTimer = window.setTimeout(setupTickers, 140);
     }, { passive: true });
   };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(beginTicker);

@@ -206,6 +206,8 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .ticker{position:relative;z-index:3;overflow:hidden;border-block:1px solid rgba(16,17,20,.8);background:var(--amber);color:var(--noir);transform:rotate(-1.2deg) scale(1.03)}
 .ticker-track{display:flex;width:max-content;transform:translateX(0);will-change:transform}
 .ticker-track.is-running{animation:ticker-loop var(--ticker-duration,20s) linear infinite}
+.ticker--reverse{margin-bottom:clamp(1rem,1.5vw,3rem);transform:rotate(1.2deg) scale(1.03)}
+.ticker--reverse .ticker-track.is-running{animation-direction:reverse}
 .ticker-group{display:flex;flex:none;align-items:center;gap:1.55rem;padding:.82rem 1.55rem .82rem 0;white-space:nowrap;font:800 .8rem var(--mono);letter-spacing:.11em}
 .ticker-group i{font-style:normal;font-size:1.1em}
 .projects{padding-block:clamp(5.5rem,10vw,9rem);position:relative}
