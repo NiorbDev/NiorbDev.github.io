@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/niorb-portrait-extension.webp">
-<link rel="stylesheet" href="styles.css?v=social-links">
+<link rel="stylesheet" href="styles.css?v=portfolio-stack">
 <script src="script.js?v=frame-budget" defer></script>
 <script src="background-snake.js?v=social-links" defer></script>
 <script src="fish-egg.js?v=2" defer></script>
@@ -41,7 +41,7 @@
 <header class="site-header">
   <canvas class="nav-pixels" aria-hidden="true"></canvas>
   <a class="wordmark" href="#inicio" aria-label="NiorbDev, inicio"><span class="wordmark-symbol">N<span>/</span></span><span class="wordmark-name">NIORBDEV<small>PORTAFOLIO / <span data-year>2026</span></small></span></a>
-  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Herramientas <span>02</span></a><a href="#redes">Redes <span>03</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Stack <span>02</span></a><a href="#redes">Redes <span>03</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </header>
 <main id="contenido">
   <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
@@ -261,13 +261,41 @@
     </div>
   </div>
 
-  <section class="toolkit section-wrap" id="herramientas">
-    <div class="toolkit-copy reveal"><p class="eyebrow">02 / MATERIALES</p><h2>Código con<br><em>textura.</em></h2><p>El stack cambia según el problema. En estos proyectos aparecen interfaces web, estructuras de búsqueda y programas de sistema.</p></div>
-    <div class="toolkit-panel reveal">
-      <div class="panel-label"><span>HERRAMIENTAS EN PROYECTOS PÚBLICOS</span><span>● EN USO</span></div>
-      <div class="tool-list"><span>React</span><span>TypeScript</span><span>C++</span><span>C</span><span>A*</span><span>POSIX</span><span>CSS</span></div>
-      <div class="panel-footer"><span>SELECTED STACK / 2026</span><span>PRINTED IN CODE</span></div>
+  <section class="toolkit section-wrap" id="herramientas" aria-labelledby="stack-title">
+    <div class="toolkit-copy reveal">
+      <h2 id="stack-title">Stack<span class="pink-dot" aria-hidden="true">.</span></h2>
+      <p>Las tecnologías que uso y dónde puedes verlas en acción.</p>
     </div>
+    <dl class="toolkit-panel reveal">
+      <div class="stack-group">
+        <dt>Aplicaciones web</dt>
+        <dd>
+          <ul class="tool-list" role="list"><li>React</li><li>TypeScript</li><li>IndexedDB</li></ul>
+          <p><a href="https://github.com/NiorbDev/Ropero-Virtual">EntreCapas</a> guarda prendas y conjuntos en el dispositivo.</p>
+        </dd>
+      </div>
+      <div class="stack-group">
+        <dt>Algoritmos y sistemas</dt>
+        <dd>
+          <ul class="tool-list" role="list"><li>C++</li><li>C</li><li>POSIX</li></ul>
+          <p><a href="https://github.com/NiorbDev/ColorBlockJam_Solver">Color Block Jam Solver</a> busca rutas con A*. El <a href="https://github.com/NiorbDev/deteccion-circulos-hough">detector de círculos</a> usa la transformada de Hough.</p>
+        </dd>
+      </div>
+      <div class="stack-group">
+        <dt>Móvil</dt>
+        <dd>
+          <ul class="tool-list" role="list"><li>Android</li></ul>
+          <p>Widget Diario muestra tareas y agenda en la pantalla de inicio.</p>
+        </dd>
+      </div>
+      <div class="stack-group">
+        <dt>Gráfica web</dt>
+        <dd>
+          <ul class="tool-list" role="list"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li></ul>
+          <p><a href="https://github.com/NiorbDev/NiorbDev.github.io">Este portafolio</a> usa CSS para los carruseles y Canvas para los efectos interactivos.</p>
+        </dd>
+      </div>
+    </dl>
   </section>
   <section class="social section-wrap" id="redes" aria-labelledby="social-title">
     <div class="social-heading reveal">

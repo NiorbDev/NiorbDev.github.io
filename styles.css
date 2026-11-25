@@ -107,7 +107,7 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:5px}
 .site-header .nav-github{color:var(--noir);background:var(--amber);padding:.72rem 1rem;font-weight:700}
 .site-header .nav-github:hover{color:var(--noir);background:var(--ivory)}
 .section-wrap{width:min(1320px,calc(100% - 2.4rem));margin-inline:auto}
-.eyebrow,.project-kicker,.card-topline,.panel-label,.panel-footer,.hero-photo-index,.mosaic-index,.mosaic-stamp,.mosaic-rule{font:500 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.eyebrow,.project-kicker,.card-topline,.hero-photo-index,.mosaic-index,.mosaic-stamp,.mosaic-rule{font:500 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .eyebrow{display:flex;align-items:center;gap:.65rem;color:var(--dim)}
 .signal-dot{width:8px;height:8px;flex:none;background:var(--amber);animation:signal 2.2s steps(2,end) infinite}
 .hero{padding-block:clamp(1.5rem,4vw,3.5rem);display:grid;grid-template-columns:minmax(0,1.48fr) minmax(300px,1fr);align-items:stretch;gap:clamp(.8rem,1.8vw,1.5rem)}
@@ -463,17 +463,21 @@ html.is-darkroom .darkroom-pill:not([hidden]){display:inline-flex}
 .hough-mark i:nth-child(3){animation-delay:2.6s}
 .hough-mark b{position:absolute;top:50%;left:50%;width:5px;height:5px;background:var(--noir);transform:translate(-50%,-50%)}
 .toolkit{padding-block:5rem;display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:clamp(2rem,8vw,8rem);border-block:1px solid var(--line)}
-.toolkit h2{font-size:clamp(3rem,6.7vw,5.5rem)}
-.toolkit h2 em{color:var(--amber);font:italic 700 .8em var(--serif);letter-spacing:-.04em;text-transform:none}
-.toolkit-copy>p:last-child{max-width:380px;color:var(--dim);line-height:1.7}
-.toolkit-panel{min-height:270px;padding:1.35rem;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(247,246,242,.34);background:var(--charcoal)}
-.panel-label,.panel-footer{display:flex;justify-content:space-between;gap:1rem;color:var(--dim);font-size:.53rem}
-.panel-label span:last-child{color:var(--amber)}
-.tool-list{display:flex;flex-wrap:wrap;gap:.6rem;padding-block:2rem}
-.tool-list span{padding:.65rem .85rem;color:var(--noir);background:var(--amber);font:800 .7rem var(--mono);text-transform:uppercase;transform:rotate(-2deg)}
-.tool-list span:nth-child(2n){transform:rotate(2deg);background:var(--ivory)}
-.tool-list span:hover{animation:jolt .35s ease-in-out}
-.panel-footer{padding-top:1rem;border-top:1px solid var(--line);font-size:.5rem}
+.toolkit h2{margin:0;font-size:clamp(3rem,6.7vw,5.5rem)}
+.toolkit-copy>p{max-width:380px;color:var(--dim);line-height:1.7}
+.toolkit-panel{min-width:0;margin:0;border:1px solid var(--line);background:var(--charcoal)}
+.stack-group{padding:clamp(.85rem,2vw,1.35rem)}
+.stack-group + .stack-group{border-top:1px solid var(--line)}
+.stack-group dt{font:700 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ivory)}
+.stack-group dd{margin:0}
+.stack-group p{margin:.85rem 0 0;font-size:.84rem;line-height:1.6;color:var(--dim)}
+.stack-group a{color:var(--ivory);text-decoration:underline;text-decoration-color:var(--amber);text-underline-offset:.22em}
+.stack-group a:hover{color:var(--amber)}
+.tool-list{display:flex;flex-wrap:wrap;gap:.55rem;margin:.9rem 0 0;padding:0;list-style:none}
+.tool-list li{padding:.45rem .58rem;color:var(--noir);background:var(--amber);font:800 .65rem var(--mono);text-transform:uppercase;transform:rotate(-2deg)}
+.tool-list li:nth-child(2n){transform:rotate(2deg);background:var(--ivory)}
+.tool-list li:hover{animation:jolt .35s ease-in-out}
+
 .social{
   padding-block:clamp(3.8rem,8vw,6.5rem);
   display:grid;
@@ -575,8 +579,6 @@ a.social-row:focus-visible{outline-offset:-5px;outline-color:var(--noir)}
   .project-kicker{margin-top:2rem}
   .darkroom-pill{right:.75rem;bottom:.75rem;padding:.56rem .75rem;font-size:.52rem}
   .toolkit{padding-block:4rem}
-  .toolkit-panel{min-height:250px;padding:1rem}
-  .panel-footer{font-size:.43rem}
   .closing{min-height:420px;padding-block:4.4rem}
   .closing-stamp{right:-2%;top:21%;opacity:.75}
   .site-footer{flex-wrap:wrap;justify-content:space-between;font-size:.45rem}
