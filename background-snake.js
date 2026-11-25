@@ -1,7 +1,9 @@
 (() => {
   const canvas = document.querySelector(".background-snake");
   const context = canvas?.getContext("2d");
-  if (!context) return;
+  const inkCanvas = document.querySelector(".gesture-ink");
+  const ink = inkCanvas?.getContext("2d");
+  if (!context || !ink) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const palette = getComputedStyle(document.documentElement);
@@ -28,11 +30,16 @@
   const trails = [];
   const fadeDuration = 1000;
   let activeTrail;
+  let pendingTouch;
   let trailFrame = 0;
   let suppressClick = false;
 
   function isBackground(event) {
     return !event.target.closest("header,a,button,input,select,textarea,h1,h2,h3,p,.hero-photo-panel,.hero-gallery,.project-card,.toolkit-panel,.ticker");
+  }
+
+  function canDraw(event) {
+    return !event.target.closest("header,footer,a,button,input,select,textarea,label,[contenteditable]");
   }
 
   function neighbors(cell) {
@@ -157,15 +164,17 @@
     }
     if (food !== undefined) drawFood(food, false);
     for (const cell of queuedFood) drawFood(cell, true);
-    drawTrails(performance.now());
     context.restore();
   }
 
   function drawTrails(now) {
-    context.strokeStyle = amber;
-    context.lineWidth = 2.5;
-    context.lineCap = "round";
-    context.lineJoin = "round";
+    ink.clearRect(0, 0, viewportWidth, viewportHeight);
+    ink.save();
+    ink.translate(0, -window.scrollY);
+    ink.strokeStyle = amber;
+    ink.lineWidth = 3;
+    ink.lineCap = "round";
+    ink.lineJoin = "round";
     for (let i = trails.length - 1; i >= 0; i--) {
       const {points, length, releasedAt} = trails[i];
       if (!length) continue;
@@ -181,17 +190,18 @@
       const previous = points[start - 1];
       const next = points[start];
       const fraction = (erasedLength - previous.distance) / (next.distance - previous.distance);
-      context.globalAlpha = 0.88 * (1 - progress * 0.6);
-      context.beginPath();
-      context.moveTo(previous.x + (next.x - previous.x) * fraction, previous.y + (next.y - previous.y) * fraction);
-      for (let j = start; j < points.length; j++) context.lineTo(points[j].x, points[j].y);
-      context.stroke();
+      ink.globalAlpha = 0.94 * (1 - progress * 0.6);
+      ink.beginPath();
+      ink.moveTo(previous.x + (next.x - previous.x) * fraction, previous.y + (next.y - previous.y) * fraction);
+      for (let j = start; j < points.length; j++) ink.lineTo(points[j].x, points[j].y);
+      ink.stroke();
     }
+    ink.restore();
   }
 
   function animateTrails() {
     trailFrame = 0;
-    draw();
+    drawTrails(performance.now());
     if (trails.some(trail => trail.releasedAt !== undefined)) {
       trailFrame = requestAnimationFrame(animateTrails);
     }
@@ -250,13 +260,20 @@
     draw();
   }
 
-  function resize() {
+  function sizeCanvases() {
     viewportWidth = document.documentElement.clientWidth;
     viewportHeight = window.innerHeight;
     const scale = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(viewportWidth * scale);
     canvas.height = Math.round(viewportHeight * scale);
     context.setTransform(scale, 0, 0, scale, 0, 0);
+    inkCanvas.width = canvas.width;
+    inkCanvas.height = canvas.height;
+    ink.setTransform(scale, 0, 0, scale, 0, 0);
+  }
+
+  function resize() {
+    sizeCanvases();
     columns = Math.max(1, Math.floor(viewportWidth / cellSize));
     food = undefined;
     queuedFood.clear();
@@ -267,15 +284,19 @@
     draw();
   }
 
-  window.addEventListener("pointerdown", event => {
-    suppressClick = false;
-    if (event.pointerType !== "mouse" || event.button !== 0 || reducedMotion.matches || !isBackground(event)) return;
+  function startTrail(event, pointerId) {
     activeTrail = {
-      pointerId: event.pointerId,
+      pointerId,
       points: [{x: event.clientX, y: event.clientY + window.scrollY, distance: 0}],
       length: 0,
     };
     trails.push(activeTrail);
+  }
+
+  window.addEventListener("pointerdown", event => {
+    suppressClick = false;
+    if (event.pointerType === "touch" || event.button !== 0 || !canDraw(event)) return;
+    startTrail(event, event.pointerId);
     event.preventDefault();
   });
 
@@ -286,7 +307,7 @@
     if (distance < (activeTrail.length ? 2 : 5)) return;
     activeTrail.length += distance;
     activeTrail.points.push({...point, distance: activeTrail.length});
-    draw();
+    drawTrails(performance.now());
   }
 
   window.addEventListener("pointermove", event => {
@@ -298,8 +319,13 @@
     if (event?.type === "pointerup" && activeTrail.length) extendTrail(event);
     if (activeTrail.length) {
       suppressClick = true;
-      activeTrail.releasedAt = performance.now();
-      if (!trailFrame) trailFrame = requestAnimationFrame(animateTrails);
+      if (reducedMotion.matches) {
+        trails.splice(trails.indexOf(activeTrail), 1);
+        drawTrails(performance.now());
+      } else {
+        activeTrail.releasedAt = performance.now();
+        if (!trailFrame) trailFrame = requestAnimationFrame(animateTrails);
+      }
     } else {
       trails.splice(trails.indexOf(activeTrail), 1);
     }
@@ -307,7 +333,43 @@
   }
   window.addEventListener("pointerup", releaseTrail);
   window.addEventListener("pointercancel", releaseTrail);
-  window.addEventListener("blur", () => releaseTrail());
+  window.addEventListener("blur", () => {
+    pendingTouch = undefined;
+    releaseTrail();
+  });
+
+  window.addEventListener("touchstart", event => {
+    if (event.touches.length !== 1 || !canDraw(event)) return;
+    pendingTouch = {touch: event.touches[0], startedAt: performance.now()};
+  }, {passive: true});
+  window.addEventListener("contextmenu", event => {
+    if (pendingTouch && canDraw(event)) event.preventDefault();
+  });
+  window.addEventListener("touchmove", event => {
+    if (!pendingTouch || event.touches.length !== 1) {
+      if (pendingTouch && activeTrail?.pointerId === "touch") releaseTrail();
+      pendingTouch = undefined;
+      return;
+    }
+    const touch = event.touches[0];
+    if (activeTrail?.pointerId !== "touch") {
+      const origin = pendingTouch.touch;
+      if (performance.now() - pendingTouch.startedAt < 260) {
+        if (Math.hypot(touch.clientX - origin.clientX, touch.clientY - origin.clientY) > 7) pendingTouch = undefined;
+        return;
+      }
+      if (!event.cancelable) return;
+      startTrail(origin, "touch");
+    }
+    if (event.cancelable) event.preventDefault();
+    extendTrail(touch);
+  }, {passive: false});
+  for (const type of ["touchend", "touchcancel"]) {
+    window.addEventListener(type, () => {
+      pendingTouch = undefined;
+      if (activeTrail?.pointerId === "touch") releaseTrail();
+    }, {passive: true});
+  }
 
   window.addEventListener("click", event => {
     if (reducedMotion.matches || (event.pointerType && event.pointerType !== "mouse")) return;
@@ -330,23 +392,31 @@
     draw();
   });
   window.addEventListener("scroll", () => {
-    if (reducedMotion.matches || scrollFrame) return;
+    if (scrollFrame) return;
     scrollFrame = requestAnimationFrame(() => {
       scrollFrame = 0;
-      draw();
+      if (!reducedMotion.matches) draw();
+      if (trails.length) drawTrails(performance.now());
     });
   }, {passive: true});
   if ("ResizeObserver" in window) {
     new ResizeObserver(() => { layoutChanged = true; }).observe(document.body);
   }
-  window.addEventListener("resize", () => { if (!reducedMotion.matches) resize(); }, {passive: true});
+  window.addEventListener("resize", () => {
+    if (reducedMotion.matches) sizeCanvases();
+    else resize();
+    if (trails.length) drawTrails(performance.now());
+  }, {passive: true});
   const syncMotion = () => {
     window.clearInterval(timer);
     cancelAnimationFrame(trailFrame);
     trailFrame = 0;
     activeTrail = undefined;
     trails.length = 0;
-    if (reducedMotion.matches) return;
+    if (reducedMotion.matches) {
+      sizeCanvases();
+      return;
+    }
     resize();
     timer = window.setInterval(tick, 112);
   };
