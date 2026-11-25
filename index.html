@@ -14,9 +14,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/niorb-portrait-extension.webp">
-<link rel="stylesheet" href="styles.css?v=portfolio-stack">
+<link rel="stylesheet" href="styles.css?v=portfolio-beta">
 <script src="script.js?v=frame-budget" defer></script>
-<script src="background-snake.js?v=social-links" defer></script>
+<script src="background-snake.js?v=portfolio-beta" defer></script>
 <script src="fish-egg.js?v=2" defer></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
 <header class="site-header">
   <canvas class="nav-pixels" aria-hidden="true"></canvas>
   <a class="wordmark" href="#inicio" aria-label="NiorbDev, inicio"><span class="wordmark-symbol">N<span>/</span></span><span class="wordmark-name">NIORBDEV<small>PORTAFOLIO / <span data-year>2026</span></small></span></a>
-  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Stack <span>02</span></a><a href="#redes">Redes <span>03</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+  <nav aria-label="Navegación principal"><a href="#proyectos">Proyectos <span>01</span></a><a href="#herramientas">Stack <span>02</span></a><a href="#perfil">Perfil <span>03</span></a><a href="#redes">Redes <span>04</span></a><a class="nav-github" href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </header>
 <main id="contenido">
   <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
@@ -210,7 +210,7 @@
             <p class="project-kicker">FITAMÓN / FERIA USACH</p><h3>Prototipo<br>premiado.</h3>
             <p class="project-description">Presentado en la Feria de Prototipos de la USACH junto al equipo, donde obtuvo el premio Voto Popular.</p>
             <div class="tag-row"><span>Prototipo</span><span>USACH</span><span>Voto Popular</span></div>
-            <div class="card-links"><a href="https://github.com/NiorbDev" target="_blank" rel="noreferrer">Ver archivo GitHub ↗</a></div>
+            <div class="card-links"><a href="#fitamon">Ver caso de estudio <span aria-hidden="true">↘</span></a></div>
           </div>
           <div class="project-xray">
             <img class="xray-photo" src="assets/gallery/projects/fitamon-feria.webp" alt="" loading="lazy" decoding="async" data-xray-img>
@@ -265,6 +265,11 @@
     <div class="toolkit-copy reveal">
       <h2 id="stack-title">Stack<span class="pink-dot" aria-hidden="true">.</span></h2>
       <p>Las tecnologías que uso y dónde puedes verlas en acción.</p>
+      <ul class="stack-priorities" aria-label="Tecnologías principales" role="list">
+        <li>Python</li>
+        <li>React</li>
+        <li>Java</li>
+      </ul>
     </div>
     <dl class="toolkit-panel reveal">
       <div class="stack-group">
@@ -277,8 +282,15 @@
       <div class="stack-group">
         <dt>Algoritmos y sistemas</dt>
         <dd>
-          <ul class="tool-list" role="list"><li>C++</li><li>C</li><li>POSIX</li></ul>
+          <ul class="tool-list" role="list"><li>C++</li><li>C</li><li>POSIX</li><li>A*</li><li>Hough</li></ul>
           <p><a href="https://github.com/NiorbDev/ColorBlockJam_Solver">Color Block Jam Solver</a> busca rutas con A*. El <a href="https://github.com/NiorbDev/deteccion-circulos-hough">detector de círculos</a> usa la transformada de Hough.</p>
+        </dd>
+      </div>
+      <div class="stack-group">
+        <dt>Programación y datos</dt>
+        <dd>
+          <ul class="tool-list" role="list"><li>R</li><li>Scheme</li><li>Prolog</li><li>Ensamblador MIPS</li></ul>
+          <p>Análisis de datos, programación funcional y lógica, y práctica de bajo nivel.</p>
         </dd>
       </div>
       <div class="stack-group">
@@ -289,17 +301,51 @@
         </dd>
       </div>
       <div class="stack-group">
-        <dt>Gráfica web</dt>
+        <dt>Gráfica y publicación web</dt>
         <dd>
-          <ul class="tool-list" role="list"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li></ul>
+          <ul class="tool-list" role="list"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li><li>SVG</li><li>Git</li><li>GitHub Pages</li></ul>
           <p><a href="https://github.com/NiorbDev/NiorbDev.github.io">Este portafolio</a> usa CSS para los carruseles y Canvas para los efectos interactivos.</p>
         </dd>
       </div>
     </dl>
   </section>
+  <section class="profile section-wrap" id="perfil" aria-labelledby="profile-title">
+    <div class="profile-copy reveal">
+      <h2 id="profile-title">Sobre mí<span class="pink-dot" aria-hidden="true">.</span></h2>
+      <p>Soy Nico Orellana. Me gusta partir de un problema cotidiano, construir algo que pueda usar y pulirlo probándolo. Trabajo en interfaces web, herramientas personales, automatizaciones y prototipos.</p>
+      <p>Me interesa colaborar en apps que simplifiquen un proceso, herramientas que conecten servicios y prototipos con IA que se puedan probar pronto.</p>
+      <div class="profile-actions">
+        <a class="closing-link" href="#redes">Contacto y redes <span aria-hidden="true">↘</span></a>
+        <span class="social-status">CV · Próximamente</span>
+      </div>
+    </div>
+    <aside class="ai-panel reveal" aria-labelledby="ai-title">
+      <h3 id="ai-title">IA aplicada<span aria-hidden="true">.</span></h3>
+      <p>Trabajo con IA a lo largo del desarrollo, desde explorar una idea hasta automatizar flujos y revisar el código.</p>
+      <dl class="ai-list">
+        <div><dt>Agentes y asistentes</dt><dd>Diseño instrucciones, contexto y pasos para que puedan usar herramientas y completar tareas concretas.</dd></div>
+        <div><dt>Automatización</dt><dd>Conecto modelos con archivos, APIs y flujos de trabajo para reducir tareas repetitivas.</dd></div>
+        <div><dt>Pruebas y revisión</dt><dd>Compruebo las salidas con ejemplos reales y reviso el código antes de integrarlo.</dd></div>
+      </dl>
+    </aside>
+  </section>
+  <section class="case-study section-wrap" id="fitamon" aria-labelledby="case-title">
+    <div class="case-copy reveal">
+      <p class="eyebrow">Caso de estudio</p>
+      <h2 id="case-title">Fitamón<span class="pink-dot" aria-hidden="true">.</span></h2>
+      <p>¿Cómo motivar a jóvenes gamers a moverse más? Con el equipo exploramos una mascota inspirada en Tamagotchi que vincula la actividad física con la progresión del personaje.</p>
+      <p>Presentamos el prototipo en la Feria de Prototipos de Ingeniería de la USACH y obtuvimos el <strong>Premio Voto Popular</strong> en 2025.</p>
+      <a class="case-link" href="assets/gallery/projects/fitamon-voto-popular.webp">Ver foto del premio <span aria-hidden="true">↗</span></a>
+    </div>
+    <figure class="case-photo reveal">
+      <img src="assets/gallery/projects/fitamon-feria.webp" alt="Figura del personaje de Fitamón en el puesto de la feria." width="960" height="1308" loading="lazy" decoding="async">
+      <figcaption>Feria de Prototipos de Ingeniería · USACH</figcaption>
+    </figure>
+  </section>
   <section class="social section-wrap" id="redes" aria-labelledby="social-title">
     <div class="social-heading reveal">
       <h2 id="social-title">Redes<br>sociales<span aria-hidden="true">.</span></h2>
+      <p class="social-contact">Para colaboraciones y proyectos, aquí estarán mis canales de contacto.</p>
     </div>
     <ul class="social-list reveal" role="list">
       <li><span class="social-row"><strong>LinkedIn</strong><span class="social-status">Próximamente</span></span></li>
