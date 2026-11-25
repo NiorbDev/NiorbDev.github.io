@@ -16,14 +16,12 @@
   const maxLength = 18;
   let columns = 0;
   let rows = 0;
-  let firstRow = 0;
   let viewportWidth = 0;
   let viewportHeight = 0;
   let hiddenCells;
-  let body = [];
-  let food;
-  const queuedFood = new Set();
-  let route = [];
+  const snakes = Array.from(document.querySelectorAll("main > section"), section => ({
+    section, startRow: 0, endRow: 0, body: [], food: undefined, queuedFood: new Set(), route: [],
+  }));
   let layoutChanged = true;
   let timer;
   let scrollFrame = 0;
@@ -42,20 +40,19 @@
     return !event.target.closest("header,footer,a,button,input,select,textarea,label,[contenteditable]");
   }
 
-  function neighbors(cell) {
+  function neighbors(snake, cell) {
     const x = cell % columns;
     const y = Math.floor(cell / columns);
     const next = [];
     if (x > 0) next.push(cell - 1);
     if (x < columns - 1) next.push(cell + 1);
-    if (y > firstRow) next.push(cell - columns);
-    if (y < rows - 1) next.push(cell + columns);
+    if (y > snake.startRow) next.push(cell - columns);
+    if (y < snake.endRow - 1) next.push(cell + columns);
     return next;
   }
 
   function readPanels() {
     rows = Math.max(1, Math.floor(document.documentElement.scrollHeight / cellSize));
-    firstRow = Math.min(rows, Math.ceil((header?.offsetHeight ?? 0) / cellSize));
     hiddenCells = new Uint8Array(columns * rows);
     const scrollTop = window.scrollY;
     for (const panel of panels) {
@@ -68,76 +65,94 @@
         if (left < right) hiddenCells.fill(1, y * columns + left, y * columns + right);
       }
     }
-    layoutChanged = false;
-    route = [];
-    const boundary = firstRow * columns;
-    for (const cell of queuedFood) {
-      if (cell < boundary || cell >= hiddenCells.length) queuedFood.delete(cell);
+    for (const snake of snakes) {
+      const {section} = snake;
+      let top = 0;
+      for (let node = section; node; node = node.offsetParent) top += node.offsetTop;
+      let bottom = top + section.offsetHeight;
+      const before = section.previousElementSibling;
+      const after = section.nextElementSibling;
+      if (before?.matches(".ticker")) top = Math.max(top, before.getBoundingClientRect().bottom + scrollTop);
+      if (after?.matches(".ticker")) bottom = Math.min(bottom, after.getBoundingClientRect().top + scrollTop);
+      snake.startRow = Math.max(0, Math.ceil(top / cellSize));
+      snake.endRow = Math.min(rows, Math.floor(bottom / cellSize));
+      const start = snake.startRow * columns;
+      const end = snake.endRow * columns;
+      const inside = cell => cell >= start && cell < end;
+      snake.route = [];
+      if (!snake.body.every(inside)) snake.body = [];
+      for (const cell of snake.queuedFood) {
+        if (!inside(cell) || hiddenCells[cell]) snake.queuedFood.delete(cell);
+      }
+      if (!inside(snake.food) || hiddenCells[snake.food]) snake.food = undefined;
     }
-    if (food < boundary || food >= hiddenCells.length || hiddenCells[food]) food = undefined;
+    layoutChanged = false;
   }
 
-  // Breadth-first search gives the shortest route on a four-direction grid.
-  function search(target, stayVisible) {
-    const head = body[0];
-    const blocked = new Set(body.slice(1, -1));
-    const parent = new Int32Array(columns * rows).fill(-1);
+  // Limit the shortest-path search to the snake's own section.
+  function search(snake, target, stayVisible) {
+    const head = snake.body[0];
+    const blocked = new Set(snake.body.slice(1, -1));
+    const start = snake.startRow * columns;
+    const parent = new Int32Array((snake.endRow - snake.startRow) * columns).fill(-1);
     const queue = [head];
-    parent[head] = head;
+    parent[head - start] = head;
     for (let i = 0; i < queue.length; i++) {
       const cell = queue[i];
       if (cell === target) break;
-      for (const next of neighbors(cell)) {
-        if (parent[next] !== -1 || blocked.has(next) || (stayVisible && hiddenCells[next])) continue;
-        parent[next] = cell;
+      for (const next of neighbors(snake, cell)) {
+        if (parent[next - start] !== -1 || blocked.has(next) || (stayVisible && hiddenCells[next])) continue;
+        parent[next - start] = cell;
         queue.push(next);
       }
     }
     if (target === undefined) return queue;
 
     const path = [];
-    if (parent[target] === -1) return path;
-    for (let cell = target; cell !== head; cell = parent[cell]) path.push(cell);
+    if (parent[target - start] === -1) return path;
+    for (let cell = target; cell !== head; cell = parent[cell - start]) path.push(cell);
     return path.reverse();
   }
 
-  function placeFood() {
-    const unoccupied = cell => !body.includes(cell) && !queuedFood.has(cell);
-    const cells = search(undefined, true);
-    const choices = cells.slice(5, 280).filter(unoccupied);
+  function placeFood(snake) {
+    const unoccupied = cell => !snake.body.includes(cell) && !snake.queuedFood.has(cell);
+    let choices = search(snake, undefined, true).slice(5, 280).filter(unoccupied);
     if (!choices.length) {
-      const open = search(undefined, false).filter(cell => !hiddenCells[cell] && unoccupied(cell));
-      food = open[Math.floor(Math.random() * open.length)];
-      return;
+      choices = search(snake, undefined, false).filter(cell => !hiddenCells[cell] && unoccupied(cell));
     }
-    food = choices[Math.floor(Math.random() * choices.length)];
+    snake.food = choices[Math.floor(Math.random() * choices.length)];
   }
 
-  function seedBody() {
-    const cells = [];
-    for (let y = firstRow; y < rows; y++) {
-      for (let x = 0; x < columns; x++) {
-        const head = y * columns + x;
-        if (x >= initialLength - 1) cells.push([head, 1]);
-        if (y >= firstRow + initialLength - 1) cells.push([head, columns]);
-      }
-    }
-    const open = cells.filter(([head, stride]) => {
-      for (let i = 0; i < initialLength; i++) {
+  function seedBody(snake) {
+    const open = [];
+    const singles = [];
+    const fits = (head, stride) => {
+      for (let i = 1; i < initialLength; i++) {
         if (hiddenCells[head - i * stride]) return false;
       }
       return true;
-    });
+    };
+    for (let y = snake.startRow; y < snake.endRow; y++) {
+      for (let x = 0; x < columns; x++) {
+        const head = y * columns + x;
+        if (hiddenCells[head]) continue;
+        singles.push(head);
+        if (x >= initialLength - 1 && fits(head, 1)) open.push([head, 1]);
+        if (y >= snake.startRow + initialLength - 1 && fits(head, columns)) open.push([head, columns]);
+      }
+    }
     const top = window.scrollY + (header?.offsetHeight ?? 0);
-    const inView = open.filter(([head, stride]) => {
-      const firstY = Math.floor((head - (initialLength - 1) * stride) / columns) * cellSize;
-      const lastY = Math.floor(head / columns) * cellSize + cellSize;
-      return firstY >= top && lastY <= window.scrollY + viewportHeight;
-    });
-    const candidates = inView.length ? inView : open;
-    const [head, stride] = candidates[Math.floor(Math.random() * candidates.length)] || cells[0] || [firstRow * columns, 1];
-    body = Array.from({length: cells.length ? initialLength : 1}, (_, i) => head - i * stride);
-    route = [];
+    const bottom = window.scrollY + viewportHeight;
+    const inView = open.filter(([head, stride]) =>
+      Math.floor((head - (initialLength - 1) * stride) / columns) * cellSize >= top
+      && (Math.floor(head / columns) + 1) * cellSize <= bottom);
+    const choices = inView.length ? inView : open;
+    const candidate = choices[Math.floor(Math.random() * choices.length)];
+    const single = singles[Math.floor(Math.random() * singles.length)];
+    snake.body = candidate
+      ? Array.from({length:initialLength}, (_, i) => candidate[0] - i * candidate[1])
+      : single === undefined ? [] : [single];
+    snake.route = [];
   }
 
   function draw() {
@@ -149,21 +164,23 @@
     context.rect(0, headerBottom, viewportWidth, Math.max(0, viewportHeight - headerBottom));
     context.clip();
     context.translate(0, -scrollTop);
-    for (let i = body.length - 1; i >= 0; i--) {
-      const cell = body[i];
-      const x = cell % columns * cellSize;
-      const y = Math.floor(cell / columns) * cellSize;
-      context.globalAlpha = i === 0 ? 0.84 : 0.54 - i / maxLength * 0.23;
-      context.fillStyle = amber;
-      context.fillRect(x + 1, y + 1, 8, 8);
-      if (i === 0) {
-        context.globalAlpha = 0.8;
-        context.fillStyle = ivory;
-        context.fillRect(x + 4, y + 4, 2, 2);
+    for (const {body, food, queuedFood} of snakes) {
+      for (let i = body.length - 1; i >= 0; i--) {
+        const cell = body[i];
+        const x = cell % columns * cellSize;
+        const y = Math.floor(cell / columns) * cellSize;
+        context.globalAlpha = i === 0 ? 0.84 : 0.54 - i / maxLength * 0.23;
+        context.fillStyle = amber;
+        context.fillRect(x + 1, y + 1, 8, 8);
+        if (i === 0) {
+          context.globalAlpha = 0.8;
+          context.fillStyle = ivory;
+          context.fillRect(x + 4, y + 4, 2, 2);
+        }
       }
+      if (food !== undefined) drawFood(food, false);
+      for (const cell of queuedFood) drawFood(cell, true);
     }
-    if (food !== undefined) drawFood(food, false);
-    for (const cell of queuedFood) drawFood(cell, true);
     context.restore();
   }
 
@@ -219,44 +236,45 @@
     }
   }
 
-  function tick() {
-    if (document.hidden) return;
-    if (layoutChanged) readPanels();
-    if (firstRow >= rows) {
-      context.clearRect(0, 0, viewportWidth, viewportHeight);
-      return;
-    }
-    if (!body.length || body.some(cell => cell < firstRow * columns || cell >= hiddenCells.length)) seedBody();
-    if (food === undefined) placeFood();
-    const target = queuedFood.values().next().value ?? food;
-    if (target !== undefined && !route.length) {
-      route = search(target, true);
-      if (!route.length) route = search(target, false);
+  function moveSnake(snake) {
+    if (!snake.body.length) seedBody(snake);
+    if (!snake.body.length) return;
+    const {body, queuedFood} = snake;
+    if (snake.food === undefined) placeFood(snake);
+    const target = queuedFood.values().next().value ?? snake.food;
+    if (target !== undefined && !snake.route.length) {
+      snake.route = search(snake, target, true);
+      if (!snake.route.length) snake.route = search(snake, target, false);
     }
 
     const blocked = new Set(body.slice(0, -1));
-    let next = route.shift();
+    let next = snake.route.shift();
     if (next === undefined || blocked.has(next)) {
-      route = [];
-      const choices = neighbors(body[0]).filter(cell => !blocked.has(cell));
+      snake.route = [];
+      const choices = neighbors(snake, body[0]).filter(cell => !blocked.has(cell));
       next = choices.find(cell => !hiddenCells[cell]) ?? choices[0];
     }
     if (next === undefined) {
-      seedBody();
-      draw();
+      seedBody(snake);
       return;
     }
 
     body.unshift(next);
     const pickedRequestedFood = queuedFood.delete(next);
-    const pickedRandomFood = next === food;
+    const pickedRandomFood = next === snake.food;
     if (pickedRequestedFood || pickedRandomFood) {
-      route = [];
+      snake.route = [];
       if (body.length > maxLength) body.pop();
-      if (pickedRandomFood) placeFood();
+      if (pickedRandomFood) placeFood(snake);
     } else {
       body.pop();
     }
+  }
+
+  function tick() {
+    if (document.hidden) return;
+    if (layoutChanged) readPanels();
+    snakes.forEach(moveSnake);
     draw();
   }
 
@@ -274,13 +292,23 @@
 
   function resize() {
     sizeCanvases();
+    const previousColumns = columns;
     columns = Math.max(1, Math.floor(viewportWidth / cellSize));
-    food = undefined;
-    queuedFood.clear();
+    if (columns !== previousColumns) {
+      const remap = cell => cell !== undefined && cell % previousColumns < columns
+        ? Math.floor(cell / previousColumns) * columns + cell % previousColumns : undefined;
+      for (const snake of snakes) {
+        const body = snake.body.map(remap);
+        snake.body = body.includes(undefined) ? [] : body;
+        snake.food = remap(snake.food);
+        snake.queuedFood = new Set(Array.from(snake.queuedFood, remap).filter(cell => cell !== undefined));
+      }
+    }
     readPanels();
-    if (firstRow >= rows) return;
-    seedBody();
-    placeFood();
+    for (const snake of snakes) {
+      if (!snake.body.length) seedBody(snake);
+      if (snake.body.length && snake.food === undefined) placeFood(snake);
+    }
     draw();
   }
 
@@ -387,18 +415,21 @@
     if (layoutChanged) readPanels();
     if (x < 0 || x >= columns || y < 0 || y >= rows) return;
     const cell = y * columns + x;
-    if (y < firstRow) return;
-    if (body.includes(cell) || queuedFood.has(cell)) return;
-    if (!queuedFood.size) route = [];
-    if (cell === food) food = undefined;
-    queuedFood.add(cell);
+    const snake = snakes.find(({startRow, endRow}) => y >= startRow && y < endRow);
+    if (!snake || hiddenCells[cell] || snake.body.includes(cell) || snake.queuedFood.has(cell)) return;
+    if (!snake.queuedFood.size) snake.route = [];
+    if (cell === snake.food) snake.food = undefined;
+    snake.queuedFood.add(cell);
     draw();
   });
   window.addEventListener("scroll", () => {
     if (scrollFrame) return;
     scrollFrame = requestAnimationFrame(() => {
       scrollFrame = 0;
-      if (!reducedMotion.matches) draw();
+      if (!reducedMotion.matches) {
+        if (layoutChanged) readPanels();
+        draw();
+      }
       if (trails.length) drawTrails(performance.now());
     });
   }, {passive: true});
